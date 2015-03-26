@@ -8,11 +8,11 @@ public class ApplicationState {
 	
 //	public static final String URL_MOBILE_SERVER = "http://192.168.0.102:7171";	
 //	public static final String URL_MOBILE_SERVER = "http://192.168.0.114:7171";
-	public static final String URL_MOBILE_SERVER = "http://162.209.56.86:7070";
-	public static final String SERVICE_NAME = "/jugoterapia-jersey-loader";
-	public static final String CATEGORIES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "/rest/beverage/categories";
-	public static final String BEVERAGES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "/rest/beverage/beverages";
-	public static final String RECIPE_URL = URL_MOBILE_SERVER + SERVICE_NAME + "/rest/beverage/recipe";
+	public static final String URL_MOBILE_SERVER = "http://josdem.io:8082";
+	public static final String SERVICE_NAME = "/jugoterapia-server/beverage/";
+	public static final String CATEGORIES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "categories";
+	public static final String BEVERAGES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverages";
+	public static final String RECIPE_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverage";
 	
 	public static final String SEARCHING_RECIPES_MESSAGE = "Buscando recetas";
 	public static final String BRINGING_RECIPE_MESSAGE = "Trayendo receta";
