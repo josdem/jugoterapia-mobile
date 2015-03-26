@@ -1,0 +1,4 @@
+<resources>
+    <style name="jugoterapiaTheme" parent="android:Theme.Light">
+    </style>    
+</resources>
