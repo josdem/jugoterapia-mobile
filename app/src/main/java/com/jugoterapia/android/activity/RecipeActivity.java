@@ -55,8 +55,7 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
         Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
         Bundle params = new Bundle();
         params.putInt("beverageId", this.getIntent().getExtras().getInt("currentBeverage"));
-        Log.i("beverageId: ", this.getIntent().getExtras().getInt("currentBeverage") + "");
-        
+
         Bundle args = new Bundle();
         args.putParcelable(ARGS_URI, recipeUri);
         args.putParcelable(ARGS_PARAMS, params);
