@@ -7,8 +7,8 @@ public class ApplicationState {
 	 */
 	
 //	public static final String URL_MOBILE_SERVER = "http://192.168.0.102:7171";	
-	public static final String URL_MOBILE_SERVER = "http://192.168.2.6:8080";
-//	public static final String URL_MOBILE_SERVER = "http://josdem.io:8082";
+//	public static final String URL_MOBILE_SERVER = "http://192.168.2.6:8080";
+	public static final String URL_MOBILE_SERVER = "http://josdem.io:8082";
 	public static final String SERVICE_NAME = "/jugoterapia-server/beverage/";
 	public static final String CATEGORIES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "categories";
 	public static final String BEVERAGES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverages";
