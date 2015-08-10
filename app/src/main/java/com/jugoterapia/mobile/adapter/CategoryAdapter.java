@@ -1,4 +1,4 @@
-package com.jugoterapia.android.adapter;
+package com.jugoterapia.mobile.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.jugoterapia.android.R;
-import com.jugoterapia.android.model.Category;
+import com.jugoterapia.mobile.R;
+import com.jugoterapia.mobile.model.Category;
 
 public class CategoryAdapter extends ArrayAdapter<Category> {
 

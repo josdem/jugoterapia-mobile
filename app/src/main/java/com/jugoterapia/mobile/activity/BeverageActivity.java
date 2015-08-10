@@ -1,8 +1,8 @@
-package com.jugoterapia.android.activity;
+package com.jugoterapia.mobile.activity;
 
-import java.io.UnsupportedEncodingException;
-import java.util.StringTokenizer;
+import java.util.List;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,34 +13,38 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.jugoterapia.android.R;
-import com.jugoterapia.android.loader.RESTLoader;
-import com.jugoterapia.android.loader.RESTLoader.RESTResponse;
-import com.jugoterapia.android.model.Beverage;
-import com.jugoterapia.android.state.ApplicationState;
+import com.jugoterapia.mobile.R;
+import com.jugoterapia.mobile.bean.BeverageWrapper;
+import com.jugoterapia.mobile.loader.RESTLoader;
+import com.jugoterapia.mobile.loader.RESTLoader.RESTResponse;
+import com.jugoterapia.mobile.model.Beverage;
+import com.jugoterapia.mobile.state.ApplicationState;
 
 /**
- * @understands It shows beverage data such as title, ingredients and recipe
+ * @understands It shows all beverages title based in category 
  */
 
-public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<RESTLoader.RESTResponse> {
+public class BeverageActivity extends FragmentActivity implements LoaderCallbacks<RESTLoader.RESTResponse> {
 	
 	private static final String ARGS_URI    = "com.jugoterapia.android.activity.ARGS_URI";
     private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
     private static final int LOADER_ID = 0x1;
     
-    private Beverage beverage;
-	
+    private ArrayAdapter<Beverage> mAdapter;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_recipe);
+		setContentView(R.layout.activity_beverage);
 		
 		FragmentManager fm = getSupportFragmentManager();
 		
@@ -52,12 +56,14 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
         	ft.commit();
         }
         
-        Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
+        mAdapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
+        
+        Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
         Bundle params = new Bundle();
-        params.putInt("beverageId", this.getIntent().getExtras().getInt("currentBeverage"));
-
+        params.putInt("categoryId", this.getIntent().getExtras().getInt("currentCategory"));
+        
         Bundle args = new Bundle();
-        args.putParcelable(ARGS_URI, recipeUri);
+        args.putParcelable(ARGS_URI, beverageUri);
         args.putParcelable(ARGS_PARAMS, params);
         
         getSupportLoaderManager().initLoader(LOADER_ID, args, this);
@@ -66,12 +72,12 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 	  super.onSaveInstanceState(savedInstanceState);
-	  savedInstanceState.putInt("currentBeverage", this.getIntent().getExtras().getInt("currentBeverage"));
+	  savedInstanceState.putInt("currentCategory", this.getIntent().getExtras().getInt("currentCategory"));
 	}
 	
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		this.getIntent().putExtra("currentCategory",savedInstanceState.getInt("currentBeverage"));
+		this.getIntent().putExtra("currentCategory",savedInstanceState.getInt("currentCategory"));
 	}
 	
 	@Override
@@ -90,41 +96,24 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
         String json = data.getData();
         
         if (code == 200 && !json.equals("")) {
-        	try {
-        		beverage = new Gson().fromJson(json, Beverage.class);
-        		
-        		StringTokenizer stringTokenizer = new StringTokenizer(beverage.getIngredients(), "*");
-        		StringBuilder stringBuilder = new StringBuilder();
-        		
-        		while(stringTokenizer.hasMoreElements()){
-        			stringBuilder.append("* ");
-        			stringBuilder.append(stringTokenizer.nextElement());
-        			stringBuilder.append("\n");
-        		}
-        		TextView name = (TextView) findViewById(R.id.name);
-        		try {
-        			name.setText(new String(beverage.getName().getBytes("ISO-8859-1"),"UTF-8"));
-        		} catch (UnsupportedEncodingException e) {
-        			e.printStackTrace();
-        		}
-        		
-        		TextView ingredients = (TextView) findViewById(R.id.ingredients);
-        		try {
-        			ingredients.setText(new String(stringBuilder.toString().getBytes("ISO-8859-1"),"UTF-8"));
-        		} catch (UnsupportedEncodingException e) {
-        			e.printStackTrace();
-        		}
-        		
-        		TextView recipeText = (TextView) findViewById(R.id.recipe);
-        		try {
-        			recipeText.setText(new String(beverage.getRecipe().getBytes("ISO-8859-1"),"UTF-8"));
-        		} catch (UnsupportedEncodingException e) {
-        			e.printStackTrace();
-        		}
-        		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
-                layout.setVisibility(View.GONE);
-        	} catch (JsonSyntaxException jse){
-            	Log.i("exeption: ", jse.toString());
+            ListView listView = (ListView) findViewById(R.id.listViewBeverages);
+            try{
+            	BeverageWrapper response = new Gson().fromJson(json, BeverageWrapper.class);
+            	List<Beverage> beverages = response.getBeverages();
+            	mAdapter.clear();
+            	for (Beverage beverage : beverages) {
+            		mAdapter.add(beverage);
+            	}
+            	listView.setAdapter(mAdapter);
+            	listView.setOnItemClickListener(new OnItemClickListener() {
+            		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            			listViewClicked(parent, view, position, id);
+            		}
+            	});
+            	FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
+            	layout.setVisibility(View.GONE);
+            } catch (JsonSyntaxException jse){
+            	Log.i("exception: ", jse.toString());
             	Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         }
@@ -132,6 +121,13 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
             Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
         }
     }
+
+	private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
+		Beverage beverage = (Beverage) parent.getAdapter().getItem(position);
+		Intent intent = new Intent(this, RecipeActivity.class);
+		intent.putExtra("currentBeverage", beverage.getId());
+		startActivity(intent);
+	}
 
 	@Override
 	public void onLoaderReset(Loader<RESTResponse> arg0) {

@@ -1,4 +1,4 @@
-package com.jugoterapia.android.state;
+package com.jugoterapia.mobile.state;
 
 
 public class ApplicationState {

@@ -1,6 +1,6 @@
-package com.jugoterapia.android.util;
+package com.jugoterapia.mobile.util;
 
-import com.jugoterapia.android.state.ApplicationState;
+import com.jugoterapia.mobile.state.ApplicationState;
 
 import android.app.Activity;
 import android.app.AlertDialog;

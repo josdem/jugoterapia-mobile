@@ -1,8 +1,8 @@
-package com.jugoterapia.android.bean;
+package com.jugoterapia.mobile.bean;
 
 import java.util.List;
 
-import com.jugoterapia.android.model.Beverage;
+import com.jugoterapia.mobile.model.Beverage;
 
 public class BeverageWrapper {
 	private List<Beverage> beverages;

@@ -1,4 +1,4 @@
-package com.jugoterapia.android.activity;
+package com.jugoterapia.mobile.activity;
 
 import java.util.List;
 
@@ -21,13 +21,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.jugoterapia.android.R;
-import com.jugoterapia.android.adapter.CategoryAdapter;
-import com.jugoterapia.android.bean.CategoryWrapper;
-import com.jugoterapia.android.loader.RESTLoader;
-import com.jugoterapia.android.loader.RESTLoader.RESTResponse;
-import com.jugoterapia.android.model.Category;
-import com.jugoterapia.android.state.ApplicationState;
+import com.jugoterapia.mobile.R;
+import com.jugoterapia.mobile.adapter.CategoryAdapter;
+import com.jugoterapia.mobile.bean.CategoryWrapper;
+import com.jugoterapia.mobile.loader.RESTLoader;
+import com.jugoterapia.mobile.loader.RESTLoader.RESTResponse;
+import com.jugoterapia.mobile.model.Category;
+import com.jugoterapia.mobile.state.ApplicationState;
 
 /**
  * @understands It shows juice categories 

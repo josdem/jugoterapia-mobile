@@ -1,4 +1,4 @@
-package com.jugoterapia.android.service;
+package com.jugoterapia.mobile.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class RestService {
 		    
 		    List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		    formparams.add(new BasicNameValuePair("key", key));
-		    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "latin1");
+		    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
 		    
 	    	httppost.setEntity(entity);
 	    	HttpResponse response = httpclient.execute(httppost);

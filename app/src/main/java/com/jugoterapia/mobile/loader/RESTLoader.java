@@ -1,4 +1,4 @@
-package com.jugoterapia.android.loader;
+package com.jugoterapia.mobile.loader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

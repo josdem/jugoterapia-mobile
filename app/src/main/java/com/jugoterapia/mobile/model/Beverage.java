@@ -1,4 +1,4 @@
-package com.jugoterapia.android.model;
+package com.jugoterapia.mobile.model;
 
 import java.io.UnsupportedEncodingException;
 
