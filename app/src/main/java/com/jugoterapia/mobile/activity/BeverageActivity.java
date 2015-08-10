@@ -98,6 +98,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
         if (code == 200 && !json.equals("")) {
             ListView listView = (ListView) findViewById(R.id.listViewBeverages);
             try{
+                json = "{beverages: " + json + "}";
             	BeverageWrapper response = new Gson().fromJson(json, BeverageWrapper.class);
             	List<Beverage> beverages = response.getBeverages();
             	mAdapter.clear();

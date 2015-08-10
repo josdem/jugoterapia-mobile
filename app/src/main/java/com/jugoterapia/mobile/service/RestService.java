@@ -23,7 +23,7 @@ public class RestService {
 		    
 		    List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		    formparams.add(new BasicNameValuePair("key", key));
-		    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+		    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "utf8");
 		    
 	    	httppost.setEntity(entity);
 	    	HttpResponse response = httpclient.execute(httppost);

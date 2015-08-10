@@ -93,6 +93,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
         if (code == 200 && !json.equals("")) {
             ListView listView = (ListView) findViewById(R.id.listViewCategories);
             try{
+                json = "{categories: " + json + "}";
             	CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
             	List<Category> beverages = categoryWrapper.getCategories();
             	adapter.clear();
@@ -108,7 +109,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
             	FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
             	layout.setVisibility(View.GONE);
             } catch (JsonSyntaxException jse){
-            	Log.i("exeption: ", jse.toString());
+            	Log.i("exception: ", jse.toString());
             	Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         }
