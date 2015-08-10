@@ -93,7 +93,6 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
         if (code == 200 && !json.equals("")) {
             ListView listView = (ListView) findViewById(R.id.listViewCategories);
             try{
-                json = "{categories: " + json + "}";
             	CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
             	List<Category> beverages = categoryWrapper.getCategories();
             	adapter.clear();
