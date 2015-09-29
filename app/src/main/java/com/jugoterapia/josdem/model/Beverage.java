@@ -1,6 +1,4 @@
-package com.jugoterapia.mobile.model;
-
-import java.io.UnsupportedEncodingException;
+package com.jugoterapia.josdem.model;
 
 public class Beverage {
     private Integer id;

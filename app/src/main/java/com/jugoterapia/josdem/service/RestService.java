@@ -1,4 +1,4 @@
-package com.jugoterapia.mobile.service;
+package com.jugoterapia.josdem.service;
 
 import java.util.ArrayList;
 import java.util.List;

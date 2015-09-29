@@ -1,4 +1,4 @@
-package com.jugoterapia.mobile.state;
+package com.jugoterapia.josdem.state;
 
 
 public class ApplicationState {
