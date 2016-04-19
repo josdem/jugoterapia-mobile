@@ -1,3 +1,19 @@
+/*
+  Copyright 2014 José Luis De la Cruz Morales joseluis.delacruz@gmail.com
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
 package com.jugoterapia.josdem.activity;
 
 import java.util.List;
@@ -30,44 +46,44 @@ import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 /**
- * @understands It shows juice categories 
+ * @understands It shows juice categories
  */
 
 public class CategoryActivity extends FragmentActivity implements LoaderCallbacks<RESTLoader.RESTResponse> {
-	
+
 	private static final String ARGS_URI    = "com.jugoterapia.android.activity.ARGS_URI";
     private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
     private static final int LOADER_ID = 0x1;
-    
+
     CategoryAdapter adapter;
-    
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_category);
-		
+
 		FragmentManager fm = getSupportFragmentManager();
-		
-		ListFragment list =(ListFragment) fm.findFragmentById(R.id.frameLayout); 
+
+		ListFragment list =(ListFragment) fm.findFragmentById(R.id.frameLayout);
         if (list == null){
         	list = new ListFragment();
         	FragmentTransaction ft = fm.beginTransaction();
         	ft.add(R.id.frameLayout, list);
         	ft.commit();
         }
-        
+
         adapter = new CategoryAdapter(this, R.layout.list_category);
-        
+
         Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
         Bundle params = new Bundle();
-        
+
         Bundle args = new Bundle();
         args.putParcelable(ARGS_URI, beverageUri);
         args.putParcelable(ARGS_PARAMS, params);
-        
+
         getSupportLoaderManager().initLoader(LOADER_ID, args, this);
 	}
-	
+
 	private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
 		Category selectedCategory = (Category) parent.getAdapter().getItem(position);
 		Intent intent = new Intent(this, BeverageActivity.class);
@@ -89,7 +105,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
     public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader, RESTLoader.RESTResponse data) {
         int code = data.getCode();
         String json = data.getData();
-        
+
         if (code == 200 && !json.equals("")) {
             ListView listView = (ListView) findViewById(R.id.listViewCategories);
             try{
@@ -99,7 +115,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
             	adapter.clear();
             	for (Category category : beverages) {
             		adapter.add(category);
-            	} 
+            	}
             	listView.setAdapter(adapter);
             	listView.setOnItemClickListener(new OnItemClickListener() {
             		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
