@@ -1,7 +1,5 @@
 /*
-  Copyright 2014
-  José Luis De la Cruz Morales <joseluis.delacruz@gmail.com>
-  José Juan Reyes Zuñiga <neodevelop@gmail.com>
+  Copyright 2014 José Luis De la Cruz Morales <joseluis.delacruz@gmail.com>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
