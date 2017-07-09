@@ -14,13 +14,19 @@
   limitations under the License.
 */
 
-package com.jugoterapia.josdem.bean
+package com.jugoterapia.josdem.bean;
 
-import com.jugoterapia.josdem.model.Category
+import java.util.List;
+import com.jugoterapia.josdem.model.Category;
 
-import groovy.transform.CompileStatic
+public class CategoryWrapper {
+	private List<Category> categories;
 
-@CompileStatic
-class CategoryWrapper {
-	List<Category> categories
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
 }

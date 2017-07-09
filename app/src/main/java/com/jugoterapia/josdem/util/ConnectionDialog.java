@@ -14,20 +14,26 @@
   limitations under the License.
 */
 
-package com.jugoterapia.josdem.model
+package com.jugoterapia.josdem.util;
 
-import groovy.transform.CompileStatic
+import com.jugoterapia.josdem.state.ApplicationState;
 
-@CompileStatic
-class Beverage {
-  Integer id
-  String name
-  String ingredients
-  String recipe
-  Long categoryId
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
-  @Override
-  String toString() {
-    name
-  }
+public class ConnectionDialog {
+
+	public ConnectionDialog(final Activity activity) {
+		new AlertDialog.Builder(activity)
+		.setTitle(ApplicationState.CONNECTION_TITLE)
+		.setMessage(ApplicationState.CONNECTION_MESSAGE)
+		.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id){
+				activity.finish();
+			}
+		})
+		.show();
+	}
+
 }

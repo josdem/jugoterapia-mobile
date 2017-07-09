@@ -14,29 +14,19 @@
   limitations under the License.
 */
 
-package com.jugoterapia.josdem.util
+package com.jugoterapia.josdem.bean;
 
-import com.jugoterapia.josdem.state.ApplicationState
+import java.util.List;
+import com.jugoterapia.josdem.model.Beverage;
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
+public class BeverageWrapper {
+	private List<Beverage> beverages;
 
-import groovy.transform.CompileStatic
-
-@CompileStatic
-class ConnectionDialog {
-
-	ConnectionDialog(final Activity activity) {
-		new AlertDialog.Builder(activity)
-		.setTitle(ApplicationState.CONNECTION_TITLE)
-		.setMessage(ApplicationState.CONNECTION_MESSAGE)
-		.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-			void onClick(DialogInterface dialog,int id) {
-				activity.finish()
-			}
-		})
-		.show()
+	public List<Beverage> getBeverages() {
+		return beverages;
 	}
 
+	public void setBeverages(List<Beverage> beverages) {
+		this.beverages = beverages;
+	}
 }

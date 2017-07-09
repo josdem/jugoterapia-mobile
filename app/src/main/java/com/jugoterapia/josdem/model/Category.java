@@ -14,17 +14,30 @@
   limitations under the License.
 */
 
-package com.jugoterapia.josdem.model
+package com.jugoterapia.josdem.model;
 
-import groovy.transform.CompileStatic
+public class Category {
+  private Integer id;
+  private String name;
 
-@CompileStatic
-class Category {
-  Integer id
-  String name
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   @Override
-  String toString() {
-    name
+  public String toString() {
+    return this.name;
   }
 }
