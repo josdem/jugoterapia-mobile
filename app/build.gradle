@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'groovyx.grooid.groovy-android'
 
 android {
-    compileSdkVersion 15
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 24
+    buildToolsVersion "26.0.0"
 
     defaultConfig {
         applicationId "com.jugoterapia.josdem"
-        minSdkVersion 4
-        targetSdkVersion 18
+        minSdkVersion 7
+        targetSdkVersion 24
     }
 
     buildTypes {
