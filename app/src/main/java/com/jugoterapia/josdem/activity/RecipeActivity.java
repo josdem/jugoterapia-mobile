@@ -108,22 +108,21 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
         	try {
         		beverage = new Gson().fromJson(json, Beverage.class);
 
-        		StringTokenizer stringTokenizer = new StringTokenizer(beverage.getIngredients(), "*");
+        		StringTokenizer stringTokenizer = new StringTokenizer(beverage.getIngredients(), ",");
         		StringBuilder stringBuilder = new StringBuilder();
-
         		while(stringTokenizer.hasMoreElements()){
-        			stringBuilder.append("* ");
         			stringBuilder.append(stringTokenizer.nextElement());
         			stringBuilder.append("\n");
         		}
+
         		TextView name = (TextView) findViewById(R.id.name);
-        	    name.setText(new String(beverage.getName()));
+        	    name.setText(beverage.getName());
         		TextView ingredients = (TextView) findViewById(R.id.ingredients);
 
-        	    ingredients.setText(new String(stringBuilder.toString()));
+        	    ingredients.setText(stringBuilder.toString());
 
         		TextView recipeText = (TextView) findViewById(R.id.recipe);
-        		recipeText.setText(new String(beverage.getRecipe()));
+        		recipeText.setText(beverage.getRecipe());
 
         		FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
                 layout.setVisibility(View.GONE);

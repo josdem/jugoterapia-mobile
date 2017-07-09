@@ -22,9 +22,9 @@ public class ApplicationState {
 	 */
 
 //	public static final String URL_MOBILE_SERVER = "http://192.168.0.102:7171";
-//	public static final String URL_MOBILE_SERVER = "http://192.168.2.8:8080";
-	public static final String URL_MOBILE_SERVER = "http://jugoterapia.josdem.io";
-	public static final String SERVICE_NAME = "/jugoterapia-server/beverage/";
+	public static final String URL_MOBILE_SERVER = "http://192.168.100.4:8080";
+//	public static final String URL_MOBILE_SERVER = "http://jugoterapia.josdem.io";
+	public static final String SERVICE_NAME = "/beverage/";
 	public static final String CATEGORIES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "categories";
 	public static final String BEVERAGES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverages";
 	public static final String RECIPE_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverage";
