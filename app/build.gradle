@@ -3,12 +3,15 @@ apply plugin: 'groovyx.grooid.groovy-android'
 
 android {
     compileSdkVersion 15
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.jugoterapia.josdem"
         minSdkVersion 4
         targetSdkVersion 18
+        jackOptions {
+            enabled true
+        }
     }
 
     buildTypes {
@@ -17,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -24,3 +32,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.1'
     compile 'org.codehaus.groovy:groovy:2.4.5:grooid'
 }
+
