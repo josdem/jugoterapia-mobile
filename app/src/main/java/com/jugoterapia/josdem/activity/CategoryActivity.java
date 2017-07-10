@@ -96,7 +96,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
         if (args != null && args.containsKey(ARGS_URI) && args.containsKey(ARGS_PARAMS)) {
             Uri    action = args.getParcelable(ARGS_URI);
             Bundle params = args.getParcelable(ARGS_PARAMS);
-            return new RESTLoader(this, RESTLoader.HTTPVerb.GET, action, params);
+            return new RESTLoader(this, action, params);
         }
         return null;
     }
