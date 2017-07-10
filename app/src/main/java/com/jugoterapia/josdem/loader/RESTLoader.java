@@ -148,24 +148,15 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
     private static void attachUriWithQuery(HttpRequestBase request, Uri uri, Bundle params) {
         try {
-            if (params == null) {
-                // No params were given or they have already been
-                // attached to the Uri.
-                request.setURI(new URI(uri.toString()));
+            Uri.Builder uriBuilder = uri.buildUpon();
+            for (BasicNameValuePair param : paramsToList(params)) {
+                uriBuilder.appendQueryParameter(param.getName(), param.getValue());
             }
-            else {
-                Uri.Builder uriBuilder = uri.buildUpon();
 
-                // Loop through our params and append them to the Uri.
-                for (BasicNameValuePair param : paramsToList(params)) {
-                    uriBuilder.appendQueryParameter(param.getName(), param.getValue());
-                }
+            uri = uriBuilder.build();
+            request.setURI(new URI(uri.toString()));
 
-                uri = uriBuilder.build();
-                request.setURI(new URI(uri.toString()));
-            }
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             Log.e(TAG, "URI syntax was incorrect: "+ uri.toString());
         }
     }
