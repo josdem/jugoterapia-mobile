@@ -42,7 +42,7 @@ import android.util.Log;
 
 public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     private static final String TAG = RESTLoader.class.getName();
-    private static final long STALE_DELTA = 600000;
+    private static final long STALE_DELTA = 60 * 1000;
 
     public static class RESTResponse {
         private String mData;
@@ -106,7 +106,6 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
     @Override
     public void deliverResult(RESTResponse data) {
-        // Here we cache our response.
         mRestResponse = data;
         super.deliverResult(data);
     }
@@ -114,35 +113,22 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     @Override
     protected void onStartLoading() {
         if (mRestResponse != null) {
-            // We have a cached result, so we can just
-            // return right away.
             super.deliverResult(mRestResponse);
         }
-
-        // If our response is null or we have hung onto it for a long time,
-        // then we perform a force load.
         if (mRestResponse == null || System.currentTimeMillis() - mLastLoad >= STALE_DELTA) forceLoad();
         mLastLoad = System.currentTimeMillis();
     }
 
     @Override
     protected void onStopLoading() {
-        // This prevents the AsyncTask backing this
-        // loader from completing if it is currently running.
         cancelLoad();
     }
 
     @Override
     protected void onReset() {
         super.onReset();
-
-        // Stop the Loader if it is currently running.
         onStopLoading();
-
-        // Get rid of our cache if it exists.
         mRestResponse = null;
-
-        // Reset our stale timer.
         mLastLoad = 0;
     }
 
@@ -166,10 +152,6 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
 
         for (String key : params.keySet()) {
             Object value = params.get(key);
-
-            // We can only put Strings in a form entity, so we call the toString()
-            // method to enforce. We also probably don't need to check for null here
-            // but we do anyway because Bundle.get() can return null.
             if (value != null) formList.add(new BasicNameValuePair(key, value.toString()));
         }
 
