@@ -40,8 +40,8 @@ import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-public class RESTLoader extends AsyncTaskLoader<RestResponse> {
-    private static final String TAG = RESTLoader.class.getName();
+public class RestLoader extends AsyncTaskLoader<RestResponse> {
+    private static final String TAG = RestLoader.class.getName();
     private static final long STALE_DELTA = 60 * 1000;
 
     private Uri          mAction;
@@ -50,7 +50,7 @@ public class RESTLoader extends AsyncTaskLoader<RestResponse> {
 
     private long mLastLoad;
 
-    public RESTLoader(Context context, Uri action, Bundle params) {
+    public RestLoader(Context context, Uri action, Bundle params) {
         super(context);
         mAction = action;
         mParams = params;

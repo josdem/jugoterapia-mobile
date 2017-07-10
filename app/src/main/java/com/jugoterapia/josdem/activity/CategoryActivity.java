@@ -40,7 +40,7 @@ import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.bean.CategoryWrapper;
-import com.jugoterapia.josdem.loader.RESTLoader;
+import com.jugoterapia.josdem.loader.RestLoader;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.state.ApplicationState;
@@ -96,7 +96,7 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
         if (args != null && args.containsKey(ARGS_URI) && args.containsKey(ARGS_PARAMS)) {
             Uri    action = args.getParcelable(ARGS_URI);
             Bundle params = args.getParcelable(ARGS_PARAMS);
-            return new RESTLoader(this, action, params);
+            return new RestLoader(this, action, params);
         }
         return null;
     }
