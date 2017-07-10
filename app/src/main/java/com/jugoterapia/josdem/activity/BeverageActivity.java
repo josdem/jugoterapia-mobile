@@ -41,7 +41,7 @@ import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.bean.BeverageWrapper;
 import com.jugoterapia.josdem.loader.RESTLoader;
-import com.jugoterapia.josdem.loader.RESTLoader.RESTResponse;
+import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.state.ApplicationState;
 
@@ -49,7 +49,7 @@ import com.jugoterapia.josdem.state.ApplicationState;
  * @understands It shows all beverages title based in category
  */
 
-public class BeverageActivity extends FragmentActivity implements LoaderCallbacks<RESTLoader.RESTResponse> {
+public class BeverageActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
 
 	private static final String ARGS_URI    = "com.jugoterapia.android.activity.ARGS_URI";
     private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
@@ -97,7 +97,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
 	}
 
 	@Override
-    public Loader<RESTLoader.RESTResponse> onCreateLoader(int id, Bundle args) {
+    public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
         if (args != null && args.containsKey(ARGS_URI) && args.containsKey(ARGS_PARAMS)) {
             Uri    action = args.getParcelable(ARGS_URI);
             Bundle params = args.getParcelable(ARGS_PARAMS);
@@ -107,7 +107,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     }
 
 	@Override
-    public void onLoadFinished(Loader<RESTLoader.RESTResponse> loader, RESTLoader.RESTResponse data) {
+    public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
         int    code = data.getCode();
         String json = data.getData();
 
@@ -147,7 +147,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
 	}
 
 	@Override
-	public void onLoaderReset(Loader<RESTResponse> arg0) {
+	public void onLoaderReset(Loader<RestResponse> arg0) {
 	}
 
 }

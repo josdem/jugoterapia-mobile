@@ -40,34 +40,13 @@ import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
+public class RESTLoader extends AsyncTaskLoader<RestResponse> {
     private static final String TAG = RESTLoader.class.getName();
     private static final long STALE_DELTA = 60 * 1000;
 
-    public static class RESTResponse {
-        private String mData;
-        private int    mCode;
-
-        public RESTResponse() {
-        }
-
-        public RESTResponse(String data, int code) {
-            mData = data;
-            mCode = code;
-        }
-
-        public String getData() {
-            return mData;
-        }
-
-        public int getCode() {
-            return mCode;
-        }
-    }
-
     private Uri          mAction;
     private Bundle       mParams;
-    private RESTResponse mRestResponse;
+    private RestResponse mRestResponse;
 
     private long mLastLoad;
 
@@ -78,7 +57,7 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
     }
 
     @Override
-    public RESTResponse loadInBackground() {
+    public RestResponse loadInBackground() {
         try {
             HttpRequestBase request = null;
             request = new HttpGet();
@@ -90,22 +69,22 @@ public class RESTLoader extends AsyncTaskLoader<RESTLoader.RESTResponse> {
             HttpEntity responseEntity = response.getEntity();
             StatusLine responseStatus = response.getStatusLine();
             int statusCode = responseStatus != null ? responseStatus.getStatusCode() : 0;
-            RESTResponse restResponse = new RESTResponse(responseEntity != null ? EntityUtils.toString(responseEntity) : null, statusCode);
+            RestResponse restResponse = new RestResponse(responseEntity != null ? EntityUtils.toString(responseEntity) : null, statusCode);
             return restResponse;
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "A UrlEncodedFormEntity was created with an unsupported encoding.", e);
-            return new RESTResponse();
+            return new RestResponse();
         } catch (ClientProtocolException e) {
             Log.e(TAG, "There was a problem when sending the request.", e);
-            return new RESTResponse();
+            return new RestResponse();
         } catch (IOException e) {
             Log.e(TAG, "There was a problem when sending the request.", e);
-            return new RESTResponse();
+            return new RestResponse();
         }
     }
 
     @Override
-    public void deliverResult(RESTResponse data) {
+    public void deliverResult(RestResponse data) {
         mRestResponse = data;
         super.deliverResult(data);
     }
