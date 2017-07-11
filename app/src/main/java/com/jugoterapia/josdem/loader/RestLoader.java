@@ -59,18 +59,16 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
     @Override
     public RestResponse loadInBackground() {
         try {
-            HttpRequestBase request = null;
-            request = new HttpGet();
-            attachUriWithQuery(request, action, params);
-
-            HttpClient client = new DefaultHttpClient();
             Log.d(TAG, "Executing request: " + ": "+ action.toString());
+            HttpRequestBase request = new HttpGet();
+            attachUriWithQuery(request, action, params);
+            HttpClient client = new DefaultHttpClient();
+
             HttpResponse response = client.execute(request);
             HttpEntity responseEntity = response.getEntity();
             StatusLine responseStatus = response.getStatusLine();
             int statusCode = responseStatus != null ? responseStatus.getStatusCode() : 0;
-            RestResponse restResponse = new RestResponse(responseEntity != null ? EntityUtils.toString(responseEntity) : null, statusCode);
-            return restResponse;
+            return new RestResponse(responseEntity != null ? EntityUtils.toString(responseEntity) : null, statusCode);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "A UrlEncodedFormEntity was created with an unsupported encoding.", e);
             return new RestResponse();
@@ -127,7 +125,7 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
     }
 
     private List<BasicNameValuePair> paramsToList(Bundle params) {
-        ArrayList<BasicNameValuePair> formList = new ArrayList<BasicNameValuePair>(params.size());
+        List formList = new ArrayList<BasicNameValuePair>();
 
         for (String key : params.keySet()) {
             Object value = params.get(key);
