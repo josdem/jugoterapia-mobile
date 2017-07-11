@@ -17,21 +17,21 @@
 package com.jugoterapia.josdem.loader;
 
 public class RestResponse {
-    private String mData;
-    private int    mCode;
+    private String data;
+    private int code;
 
     public RestResponse(){}
 
     public RestResponse(String data, int code) {
-        mData = data;
-        mCode = code;
+        this.data = data;
+        this.code = code;
     }
 
     public String getData() {
-        return mData;
+        return data;
     }
 
     public int getCode() {
-        return mCode;
+        return code;
     }
 }

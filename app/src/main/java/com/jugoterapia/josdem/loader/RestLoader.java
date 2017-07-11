@@ -44,16 +44,16 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
     private static final String TAG = RestLoader.class.getName();
     private static final long STALE_DELTA = 60 * 1000;
 
-    private Uri          mAction;
-    private Bundle       mParams;
-    private RestResponse mRestResponse;
+    private Uri action;
+    private Bundle params;
+    private RestResponse restResponse;
 
-    private long mLastLoad;
+    private long lastLoad;
 
     public RestLoader(Context context, Uri action, Bundle params) {
         super(context);
-        mAction = action;
-        mParams = params;
+        this.action = action;
+        this.params = params;
     }
 
     @Override
@@ -61,10 +61,10 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
         try {
             HttpRequestBase request = null;
             request = new HttpGet();
-            attachUriWithQuery(request, mAction, mParams);
+            attachUriWithQuery(request, action, params);
 
             HttpClient client = new DefaultHttpClient();
-            Log.d(TAG, "Executing request: " + ": "+ mAction.toString());
+            Log.d(TAG, "Executing request: " + ": "+ action.toString());
             HttpResponse response = client.execute(request);
             HttpEntity responseEntity = response.getEntity();
             StatusLine responseStatus = response.getStatusLine();
@@ -85,17 +85,17 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
 
     @Override
     public void deliverResult(RestResponse data) {
-        mRestResponse = data;
+        restResponse = data;
         super.deliverResult(data);
     }
 
     @Override
     protected void onStartLoading() {
-        if (mRestResponse != null) {
-            super.deliverResult(mRestResponse);
+        if (restResponse != null) {
+            super.deliverResult(restResponse);
         }
-        if (mRestResponse == null || System.currentTimeMillis() - mLastLoad >= STALE_DELTA) forceLoad();
-        mLastLoad = System.currentTimeMillis();
+        if (restResponse == null || System.currentTimeMillis() - lastLoad >= STALE_DELTA) forceLoad();
+        lastLoad = System.currentTimeMillis();
     }
 
     @Override
@@ -107,11 +107,11 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
     protected void onReset() {
         super.onReset();
         onStopLoading();
-        mRestResponse = null;
-        mLastLoad = 0;
+        restResponse = null;
+        lastLoad = 0;
     }
 
-    private static void attachUriWithQuery(HttpRequestBase request, Uri uri, Bundle params) {
+    private void attachUriWithQuery(HttpRequestBase request, Uri uri, Bundle params) {
         try {
             Uri.Builder uriBuilder = uri.buildUpon();
             for (BasicNameValuePair param : paramsToList(params)) {
@@ -126,7 +126,7 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
         }
     }
 
-    private static List<BasicNameValuePair> paramsToList(Bundle params) {
+    private List<BasicNameValuePair> paramsToList(Bundle params) {
         ArrayList<BasicNameValuePair> formList = new ArrayList<BasicNameValuePair>(params.size());
 
         for (String key : params.keySet()) {
