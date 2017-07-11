@@ -67,11 +67,10 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
         adapter = new CategoryAdapter(this, R.layout.list_category);
 
         Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
-        Bundle params = new Bundle();
 
         Bundle args = new Bundle();
         args.putParcelable(ARGS_URI, beverageUri);
-        args.putParcelable(ARGS_PARAMS, params);
+        args.putParcelable(ARGS_PARAMS, new Bundle());
 
         getSupportLoaderManager().initLoader(LOADER_ID, args, this);
 	}
@@ -85,21 +84,18 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
 
 	@Override
     public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-        if (args != null && args.containsKey(ARGS_URI) && args.containsKey(ARGS_PARAMS)) {
-            Uri    action = args.getParcelable(ARGS_URI);
-            Bundle params = args.getParcelable(ARGS_PARAMS);
-            return new RestLoader(this, action, params);
-        }
-        return null;
+		Uri action = args.getParcelable(ARGS_URI);
+		Bundle params = args.getParcelable(ARGS_PARAMS);
+		return new RestLoader(this, action, params);
     }
 
 	@Override
-    public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-        int code = data.getCode();
-        String json = data.getData();
+	public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
+		int code = data.getCode();
+		String json = data.getData();
 
-        if (code == 200 && !json.equals("")) {
-            ListView listView = (ListView) findViewById(R.id.listViewCategories);
+		if (code == 200 && !json.equals("")) {
+			ListView listView = (ListView) findViewById(R.id.listViewCategories);
             try{
                 json = "{categories: " + json + "}";
             	CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
