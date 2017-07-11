@@ -125,11 +125,11 @@ public class RestLoader extends AsyncTaskLoader<RestResponse> {
     }
 
     private List<BasicNameValuePair> paramsToList(Bundle params) {
-        List formList = new ArrayList<BasicNameValuePair>();
+        List<BasicNameValuePair> formList = new ArrayList<BasicNameValuePair>();
 
         for (String key : params.keySet()) {
             Object value = params.get(key);
-            if (value != null) formList.add(new BasicNameValuePair(key, value.toString()));
+            formList.add(new BasicNameValuePair(key, value.toString()));
         }
 
         return formList;
