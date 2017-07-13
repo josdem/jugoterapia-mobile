@@ -50,78 +50,78 @@ import com.jugoterapia.josdem.state.ApplicationState;
 
 public class CategoryActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
 
-	private static final String ARGS_URI    = "com.jugoterapia.android.activity.ARGS_URI";
-    private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-    private static final int LOADER_ID = 0x1;
+  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
+  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
+  private static final int LOADER_ID = 0x1;
 
-    CategoryAdapter adapter;
+  CategoryAdapter adapter;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_category);
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_category);
 
-		FragmentManager fm = getSupportFragmentManager();
-		ListFragment list =(ListFragment) fm.findFragmentById(R.id.frameLayout);
-        adapter = new CategoryAdapter(this, R.layout.list_category);
+    FragmentManager fm = getSupportFragmentManager();
+    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
+    adapter = new CategoryAdapter(this, R.layout.list_category);
 
-        Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
+    Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
 
-        Bundle args = new Bundle();
-        args.putParcelable(ARGS_URI, beverageUri);
-        args.putParcelable(ARGS_PARAMS, new Bundle());
+    Bundle args = new Bundle();
+    args.putParcelable(ARGS_URI, beverageUri);
+    args.putParcelable(ARGS_PARAMS, new Bundle());
 
-        getSupportLoaderManager().initLoader(LOADER_ID, args, this);
-	}
+    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
+  }
 
-	private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
-		Category selectedCategory = (Category) parent.getAdapter().getItem(position);
-		Intent intent = new Intent(this, BeverageActivity.class);
-		intent.putExtra("currentCategory", selectedCategory.getId());
-		startActivity(intent);
-	}
+  private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
+    Category selectedCategory = (Category) parent.getAdapter().getItem(position);
+    Intent intent = new Intent(this, BeverageActivity.class);
+    intent.putExtra("currentCategory", selectedCategory.getId());
+    startActivity(intent);
+  }
 
-	@Override
-    public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-		Uri action = args.getParcelable(ARGS_URI);
-		Bundle params = args.getParcelable(ARGS_PARAMS);
-		return new RestLoader(this, action, params);
-    }
+  @Override
+  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
+    Uri action = args.getParcelable(ARGS_URI);
+    Bundle params = args.getParcelable(ARGS_PARAMS);
+    return new RestLoader(this, action, params);
+  }
 
-	@Override
-	public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-		int code = data.getCode();
-		String json = data.getData();
+  @Override
+  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
+    int code = data.getCode();
+    String json = data.getData();
 
-		if (code == 200 && !json.isEmpty()) {
-			ListView listView = (ListView) findViewById(R.id.listViewCategories);
-            try{
-                json = "{categories: " + json + "}";
-            	CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
-            	List<Category> categories = categoryWrapper.getCategories();
-            	adapter.clear();
-                for(Category category : categories){
-                    adapter.add(category);
-                }
-            	listView.setAdapter(adapter);
-            	listView.setOnItemClickListener(new OnItemClickListener() {
-            		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            			listViewClicked(parent, view, position, id);
-            		}
-            	});
-            	FrameLayout layout = (FrameLayout)findViewById(R.id.frameLayout);
-            	layout.setVisibility(View.GONE);
-            } catch (JsonSyntaxException jse){
-            	Log.i("exception: ", jse.toString());
-            	Toast.makeText(this, ApplicationState.PARSING_CATEGORY_MESSAGE, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
+    if (code == 200 && !json.isEmpty()) {
+      ListView listView = (ListView) findViewById(R.id.listViewCategories);
+      try {
+        json = "{categories: " + json + "}";
+        CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
+        List<Category> categories = categoryWrapper.getCategories();
+        adapter.clear();
+        for (Category category : categories) {
+          adapter.add(category);
         }
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listViewClicked(parent, view, position, id);
+          }
+        });
+        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
+        layout.setVisibility(View.GONE);
+      } catch (JsonSyntaxException jse) {
+        Log.i("exception: ", jse.toString());
+        Toast.makeText(this, ApplicationState.PARSING_CATEGORY_MESSAGE, Toast.LENGTH_SHORT).show();
+      }
+    } else {
+      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
     }
+  }
 
-	@Override
-	public void onLoaderReset(Loader<RestResponse> arg0) {
-	}
+  @Override
+  public void onLoaderReset(Loader<RestResponse> arg0) {
+  }
 
 }
