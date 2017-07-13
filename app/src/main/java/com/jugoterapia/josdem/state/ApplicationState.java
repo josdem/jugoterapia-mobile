@@ -31,4 +31,5 @@ public class ApplicationState {
 	public static final String CONNECTION_TITLE = "Conexión";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
 	public static final String PARSING_CATEGORY_MESSAGE = "No fue posible obtener las categorías";
+	public static final String PARSING_BEVERAGE_MESSAGE = "No fue posible obtener las recetas";
 }

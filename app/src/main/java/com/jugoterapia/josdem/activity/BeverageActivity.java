@@ -100,7 +100,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     int code = data.getCode();
     String json = data.getData();
 
-    if (code == 200 && !json.equals("")) {
+    if (code == 200 && !json.isEmpty()) {
       ListView listView = (ListView) findViewById(R.id.listViewBeverages);
       try {
         json = "{beverages: " + json + "}";
@@ -120,7 +120,7 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
         layout.setVisibility(View.GONE);
       } catch (JsonSyntaxException jse) {
         Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ApplicationState.PARSING_BEVERAGE_MESSAGE, Toast.LENGTH_SHORT).show();
       }
     } else {
       Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
