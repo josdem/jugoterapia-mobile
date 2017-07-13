@@ -90,12 +90,9 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
 
   @Override
   public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    if (args != null && args.containsKey(ARGS_URI) && args.containsKey(ARGS_PARAMS)) {
-      Uri action = args.getParcelable(ARGS_URI);
-      Bundle params = args.getParcelable(ARGS_PARAMS);
-      return new RestLoader(this, action, params);
-    }
-    return null;
+    Uri action = args.getParcelable(ARGS_URI);
+    Bundle params = args.getParcelable(ARGS_PARAMS);
+    return new RestLoader(this, action, params);
   }
 
   @Override
