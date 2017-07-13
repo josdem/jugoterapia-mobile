@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -94,16 +93,16 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
 		int code = data.getCode();
 		String json = data.getData();
 
-		if (code == 200 && !json.equals("")) {
+		if (code == 200 && !json.isEmpty()) {
 			ListView listView = (ListView) findViewById(R.id.listViewCategories);
             try{
                 json = "{categories: " + json + "}";
             	CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
-            	List<Category> beverages = categoryWrapper.getCategories();
+            	List<Category> categories = categoryWrapper.getCategories();
             	adapter.clear();
-            	for (Category category : beverages) {
-            		adapter.add(category);
-            	}
+                for(Category category : categories){
+                    adapter.add(category);
+                }
             	listView.setAdapter(adapter);
             	listView.setOnItemClickListener(new OnItemClickListener() {
             		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,10 +113,9 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
             	layout.setVisibility(View.GONE);
             } catch (JsonSyntaxException jse){
             	Log.i("exception: ", jse.toString());
-            	Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
+            	Toast.makeText(this, ApplicationState.PARSING_CATEGORY_MESSAGE, Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
+        } else {
             Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
         }
     }

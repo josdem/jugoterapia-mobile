@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.jugoterapia.josdem"
-        minSdkVersion 4
-        targetSdkVersion 18
+        minSdkVersion 9
+        targetSdkVersion 24
         jackOptions {
             enabled true
         }
