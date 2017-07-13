@@ -29,5 +29,6 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:18.0.0'
     compile 'com.google.code.gson:gson:2.2.1'
+    testCompile 'junit:junit:4.12'
 }
 
