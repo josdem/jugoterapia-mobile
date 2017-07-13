@@ -1,5 +1,5 @@
 /*
-  Copyright 2014 José Luis De la Cruz Morales <joseluis.delacruz@gmail.com>
+  Copyright 2017 José Luis De la Cruz Morales <joseluis.delacruz@gmail.com>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import com.jugoterapia.josdem.loader.RestLoader;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.state.ApplicationState;
+import com.jugoterapia.josdem.util.BeverageSplitter;
 
 /**
  * @understands It shows beverage data such as title, ingredients and recipe
@@ -97,18 +98,11 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
       try {
         beverage = new Gson().fromJson(json, Beverage.class);
 
-        StringTokenizer stringTokenizer = new StringTokenizer(beverage.getIngredients(), ",");
-        StringBuilder stringBuilder = new StringBuilder();
-        while (stringTokenizer.hasMoreElements()) {
-          stringBuilder.append(stringTokenizer.nextElement());
-          stringBuilder.append("\n");
-        }
-
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(beverage.getName());
         TextView ingredients = (TextView) findViewById(R.id.ingredients);
 
-        ingredients.setText(stringBuilder.toString());
+        ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
 
         TextView recipeText = (TextView) findViewById(R.id.recipe);
         recipeText.setText(beverage.getRecipe());
