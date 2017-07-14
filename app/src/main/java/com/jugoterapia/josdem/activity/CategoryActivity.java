@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -62,11 +63,18 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
     setContentView(R.layout.activity_category);
 
     FragmentManager fm = getSupportFragmentManager();
-    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
+
+    ListFragment list =(ListFragment) fm.findFragmentById(R.id.frameLayout);
+    if (list == null){
+      list = new ListFragment();
+      FragmentTransaction ft = fm.beginTransaction();
+      ft.add(R.id.frameLayout, list);
+      ft.commit();
+    }
+
     adapter = new CategoryAdapter(this, R.layout.list_category);
 
     Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
-
     Bundle args = new Bundle();
     args.putParcelable(ARGS_URI, beverageUri);
     args.putParcelable(ARGS_PARAMS, new Bundle());
