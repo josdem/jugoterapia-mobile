@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -59,6 +60,12 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
 
     FragmentManager fm = getSupportFragmentManager();
     ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
+    if (list == null){
+      list = new ListFragment();
+      FragmentTransaction ft = fm.beginTransaction();
+      ft.add(R.id.frameLayout, list);
+      ft.commit();
+    }
 
     Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
 

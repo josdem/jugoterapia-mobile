@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -63,6 +64,12 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
 
     FragmentManager fm = getSupportFragmentManager();
     ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
+    if (list == null){
+      list = new ListFragment();
+      FragmentTransaction ft = fm.beginTransaction();
+      ft.add(R.id.frameLayout, list);
+      ft.commit();
+    }
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
     Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
