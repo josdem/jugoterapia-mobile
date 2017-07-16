@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 15
+    compileSdkVersion 24
     buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.jugoterapia.josdem"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 24
         jackOptions {
             enabled true
@@ -27,8 +27,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:support-v4:24.0.0'
     compile 'com.google.code.gson:gson:2.2.1'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
     testCompile 'junit:junit:4.12'
 }
 
