@@ -40,7 +40,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.bean.BeverageWrapper;
-import com.jugoterapia.josdem.loader.RestLoader;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.state.ApplicationState;
