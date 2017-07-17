@@ -30,6 +30,7 @@ dependencies {
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.google.code.gson:gson:2.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.dagger:dagger:1.2.5'
     testCompile 'junit:junit:4.12'
 }
 

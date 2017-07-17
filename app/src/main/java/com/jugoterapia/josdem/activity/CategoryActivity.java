@@ -17,39 +17,30 @@
 package com.jugoterapia.josdem.activity;
 
 import java.util.List;
+import javax.inject.Inject;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
-import com.jugoterapia.josdem.bean.CategoryWrapper;
-import com.jugoterapia.josdem.loader.RestLoader;
-import com.jugoterapia.josdem.loader.RestResponse;
+import com.jugoterapia.josdem.loader.Callback;
+import com.jugoterapia.josdem.loader.RetrofitLoader;
+import com.jugoterapia.josdem.loader.RetrofitLoaderManager;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 /**
  * @understands It shows juice categories
  */
 
-public class CategoryActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
+public class CategoryActivity extends Activity implements Callback<List<Category>> {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
@@ -57,79 +48,59 @@ public class CategoryActivity extends FragmentActivity implements LoaderCallback
 
   CategoryAdapter adapter;
 
+  @Inject
+  JugoterapiaService jugoterapiaService;
+
+  @Override
+  public void onFailure(Exception ex) {
+    Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+  }
+
+
+  @Override
+  public void onSuccess(List<Category> result) {
+    Log.d("IssuesLoader", "onSuccess");
+    displayResults(result);
+  }
+
+  private void displayResults(List<Category> categories) {
+    CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category);
+
+    ListView listView = (ListView) findViewById(R.id.listViewCategories);
+    listView.setAdapter(adapter);
+
+    adapter.clear();
+    for (Category category : categories) {
+      adapter.add(category);
+    }
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_category);
-
-    FragmentManager fm = getSupportFragmentManager();
-
-    ListFragment list =(ListFragment) fm.findFragmentById(R.id.frameLayout);
-    if (list == null){
-      list = new ListFragment();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.add(R.id.frameLayout, list);
-      ft.commit();
-    }
-
-    adapter = new CategoryAdapter(this, R.layout.list_category);
 
     Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
     Bundle args = new Bundle();
     args.putParcelable(ARGS_URI, beverageUri);
     args.putParcelable(ARGS_PARAMS, new Bundle());
 
-    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
+    CategoryLoader loader = new CategoryLoader(this, jugoterapiaService);
+
+    RetrofitLoaderManager.init(getLoaderManager(), 0, loader, this);
   }
 
-  private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
-    Category selectedCategory = (Category) parent.getAdapter().getItem(position);
-    Intent intent = new Intent(this, BeverageActivity.class);
-    intent.putExtra("currentCategory", selectedCategory.getId());
-    startActivity(intent);
-  }
+  static class CategoryLoader extends RetrofitLoader<List<Category>, JugoterapiaService> {
 
-  @Override
-  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    Uri action = args.getParcelable(ARGS_URI);
-    Bundle params = args.getParcelable(ARGS_PARAMS);
-    return new RestLoader(this, action, params);
-  }
-
-  @Override
-  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-    int code = data.getCode();
-    String json = data.getData();
-
-    if (code == 200 && !json.isEmpty()) {
-      ListView listView = (ListView) findViewById(R.id.listViewCategories);
-      try {
-        json = "{categories: " + json + "}";
-        CategoryWrapper categoryWrapper = new Gson().fromJson(json, CategoryWrapper.class);
-        List<Category> categories = categoryWrapper.getCategories();
-        adapter.clear();
-        for (Category category : categories) {
-          adapter.add(category);
-        }
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            listViewClicked(parent, view, position, id);
-          }
-        });
-        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
-        layout.setVisibility(View.GONE);
-      } catch (JsonSyntaxException jse) {
-        Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.PARSING_CATEGORY_MESSAGE, Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
+    public CategoryLoader(Context context, JugoterapiaService service) {
+      super(context, service);
     }
-  }
 
-  @Override
-  public void onLoaderReset(Loader<RestResponse> arg0) {
+    @Override
+    public List<Category> call(JugoterapiaService service) {
+      Log.d("IssuesLoader", "call");
+      return service.getCategories();
+    }
   }
 
 }

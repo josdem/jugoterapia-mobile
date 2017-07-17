@@ -21,7 +21,7 @@ import java.util.List;
 import com.jugoterapia.josdem.model.Category;
 
 
-public interface JugoterapiaServer {
+public interface JugoterapiaService {
 
   @GET("/jugoterapia-server/beverage/categories")
   List<Category> getCategories();
