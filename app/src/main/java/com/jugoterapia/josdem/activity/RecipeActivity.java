@@ -16,6 +16,7 @@
 
 package com.jugoterapia.josdem.activity;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -33,16 +34,20 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
+import com.jugoterapia.josdem.loader.Callback;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
+import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.BeverageSplitter;
+
+import java.util.List;
 
 /**
  * @understands It shows beverage data such as title, ingredients and recipe
  */
 
-public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
+public class RecipeActivity extends Activity implements Callback<List<Beverage>> {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
@@ -55,15 +60,6 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe);
 
-    FragmentManager fm = getSupportFragmentManager();
-    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
-    if (list == null){
-      list = new ListFragment();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.add(R.id.frameLayout, list);
-      ft.commit();
-    }
-
     Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
 
     Bundle params = new Bundle();
@@ -72,7 +68,6 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
     args.putParcelable(ARGS_URI, recipeUri);
     args.putParcelable(ARGS_PARAMS, params);
 
-    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
   }
 
   @Override
@@ -87,42 +82,12 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
   }
 
   @Override
-  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    Uri action = args.getParcelable(ARGS_URI);
-    Bundle params = args.getParcelable(ARGS_PARAMS);
-    return new RestLoader(this, action, params);
+  public void onFailure(Exception ex) {
+
   }
 
   @Override
-  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-    int code = data.getCode();
-    String json = data.getData();
+  public void onSuccess(List<Beverage> result) {
 
-    if (code == 200 && !json.isEmpty()) {
-      try {
-        beverage = new Gson().fromJson(json, Beverage.class);
-
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText(beverage.getName());
-        TextView ingredients = (TextView) findViewById(R.id.ingredients);
-
-        ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
-
-        TextView recipeText = (TextView) findViewById(R.id.recipe);
-        recipeText.setText(beverage.getRecipe());
-        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
-        layout.setVisibility(View.GONE);
-      } catch (JsonSyntaxException jse) {
-        Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.PARSING_RECIPE_MESSAGE, Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
-    }
   }
-
-  @Override
-  public void onLoaderReset(Loader<RestResponse> arg0) {
-  }
-
 }

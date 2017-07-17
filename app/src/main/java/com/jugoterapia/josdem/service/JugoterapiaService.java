@@ -16,7 +16,7 @@
 
 package com.jugoterapia.josdem.service;
 
-import retrofit2.http.GET;
+import retrofit.http.GET;
 import java.util.List;
 import com.jugoterapia.josdem.model.Category;
 

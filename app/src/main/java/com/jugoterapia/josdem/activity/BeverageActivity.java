@@ -18,6 +18,7 @@ package com.jugoterapia.josdem.activity;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,15 +41,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.bean.BeverageWrapper;
+import com.jugoterapia.josdem.loader.Callback;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
+import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 /**
  * @understands It shows all beverages title based in category
  */
 
-public class BeverageActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
+public class BeverageActivity extends Activity implements Callback<List<Beverage>> {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
@@ -61,14 +64,6 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_beverage);
 
-    FragmentManager fm = getSupportFragmentManager();
-    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
-    if (list == null){
-      list = new ListFragment();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.add(R.id.frameLayout, list);
-      ft.commit();
-    }
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
     Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
@@ -79,7 +74,6 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     args.putParcelable(ARGS_URI, beverageUri);
     args.putParcelable(ARGS_PARAMS, params);
 
-    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
   }
 
   @Override
@@ -93,44 +87,6 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     this.getIntent().putExtra("currentCategory", savedInstanceState.getInt("currentCategory"));
   }
 
-  @Override
-  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    Uri action = args.getParcelable(ARGS_URI);
-    Bundle params = args.getParcelable(ARGS_PARAMS);
-    return new RestLoader(this, action, params);
-  }
-
-  @Override
-  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-    int code = data.getCode();
-    String json = data.getData();
-
-    if (code == 200 && !json.isEmpty()) {
-      ListView listView = (ListView) findViewById(R.id.listViewBeverages);
-      try {
-        json = "{beverages: " + json + "}";
-        BeverageWrapper response = new Gson().fromJson(json, BeverageWrapper.class);
-        List<Beverage> beverages = response.getBeverages();
-        adapter.clear();
-        for (Beverage beverage : beverages) {
-          adapter.add(beverage);
-        }
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            listViewClicked(parent, view, position, id);
-          }
-        });
-        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
-        layout.setVisibility(View.GONE);
-      } catch (JsonSyntaxException jse) {
-        Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.PARSING_BEVERAGE_MESSAGE, Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
-    }
-  }
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Beverage beverage = (Beverage) parent.getAdapter().getItem(position);
@@ -140,7 +96,12 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
   }
 
   @Override
-  public void onLoaderReset(Loader<RestResponse> arg0) {
+  public void onFailure(Exception ex) {
+
   }
 
+  @Override
+  public void onSuccess(List<Beverage> result) {
+
+  }
 }
