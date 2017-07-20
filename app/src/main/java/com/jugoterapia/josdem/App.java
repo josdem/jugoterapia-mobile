@@ -16,29 +16,19 @@
 
 package com.jugoterapia.josdem;
 
-import javax.inject.Singleton;
+import android.app.Application;
+import dagger.ObjectGraph;
 
-import dagger.Module;
-import dagger.Provides;
-import retrofit.RestAdapter;
+public class App extends Application {
+  private ObjectGraph graph;
 
-import com.jugoterapia.josdem.service.JugoterapiaService;
-import com.jugoterapia.josdem.activity.CategoryActivity;
+  @Override public void onCreate() {
+    super.onCreate();
 
-@Module(
-        library = true,
-        injects = {CategoryActivity.class})
-public class MainModule {
+    graph = ObjectGraph.create(MainModule.class);
+  }
 
-  @Provides
-  @Singleton
-  JugoterapiaService buildRestClient() {
-
-    RestAdapter adapter =
-            new RestAdapter.Builder().setEndpoint("http://jugoterapia.josdem.io").build();
-
-    return adapter.create(JugoterapiaService.class);
+  public void inject(Object object) {
+    graph.inject(object);
   }
 }
-
-
