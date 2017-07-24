@@ -27,12 +27,16 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
+import com.jugoterapia.josdem.component.ActivityComponent;
+import com.jugoterapia.josdem.component.DaggerActivityComponent;
 import com.jugoterapia.josdem.loader.Callback;
 import com.jugoterapia.josdem.loader.RetrofitLoader;
 import com.jugoterapia.josdem.loader.RetrofitLoaderManager;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 
@@ -50,6 +54,18 @@ public class CategoryActivity extends Activity implements Callback<List<Category
 
   @Inject
   JugoterapiaService jugoterapiaService;
+
+  private ActivityComponent activityComponent;
+
+  public ActivityComponent getActivityComponent() {
+    if (activityComponent == null) {
+      activityComponent = DaggerActivityComponent.builder()
+              .activityModule(new ActivityModule(this))
+              .applicationComponent(JugoterapiaApplication.get(this).getComponent())
+              .build();
+    }
+    return activityComponent;
+  }
 
   @Override
   public void onFailure(Exception ex) {
@@ -78,8 +94,9 @@ public class CategoryActivity extends Activity implements Callback<List<Category
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_category);
+    getActivityComponent().inject(this);
 
+    setContentView(R.layout.activity_category);
     Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
     Bundle args = new Bundle();
     args.putParcelable(ARGS_URI, beverageUri);
@@ -98,7 +115,7 @@ public class CategoryActivity extends Activity implements Callback<List<Category
 
     @Override
     public List<Category> call(JugoterapiaService service) {
-      Log.d("IssuesLoader", "call");
+      Log.d("IssuesLoader", "Calling get categories");
       return service.getCategories();
     }
   }

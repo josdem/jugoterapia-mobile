@@ -12,6 +12,7 @@
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
+        android:name=".JugoterapiaApplication"
         android:theme="@style/jugoterapiaTheme" >
         <activity
             android:name=".activity.CategoryActivity"
