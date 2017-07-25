@@ -17,43 +17,36 @@
 package com.jugoterapia.josdem.activity;
 
 import java.util.List;
-import javax.inject.Inject;
-
-import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.component.DaggerActivityComponent;
-import com.jugoterapia.josdem.loader.Callback;
-import com.jugoterapia.josdem.loader.RetrofitLoader;
-import com.jugoterapia.josdem.loader.RetrofitLoaderManager;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 /**
  * @understands It shows juice categories
  */
 
-public class CategoryActivity extends Activity implements Callback<List<Category>> {
+public class CategoryActivity extends AppCompatActivity {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
   private static final int LOADER_ID = 0x1;
 
   CategoryAdapter adapter;
-
-  @Inject
-  JugoterapiaService jugoterapiaService;
 
   private ActivityComponent activityComponent;
 
@@ -65,18 +58,6 @@ public class CategoryActivity extends Activity implements Callback<List<Category
               .build();
     }
     return activityComponent;
-  }
-
-  @Override
-  public void onFailure(Exception ex) {
-    Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-  }
-
-
-  @Override
-  public void onSuccess(List<Category> result) {
-    Log.d("IssuesLoader", "onSuccess");
-    displayResults(result);
   }
 
   private void displayResults(List<Category> categories) {
@@ -102,22 +83,20 @@ public class CategoryActivity extends Activity implements Callback<List<Category
     args.putParcelable(ARGS_URI, beverageUri);
     args.putParcelable(ARGS_PARAMS, new Bundle());
 
-    CategoryLoader loader = new CategoryLoader(this, jugoterapiaService);
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<List<Category>> call = jugoterapiaService.getCategories();
+    call.enqueue(new retrofit2.Callback<List<Category>>() {
 
-    RetrofitLoaderManager.init(getLoaderManager(), 0, loader, this);
-  }
+      @Override
+      public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+        displayResults(response.body());
+      }
 
-  static class CategoryLoader extends RetrofitLoader<List<Category>, JugoterapiaService> {
-
-    public CategoryLoader(Context context, JugoterapiaService service) {
-      super(context, service);
-    }
-
-    @Override
-    public List<Category> call(JugoterapiaService service) {
-      Log.d("IssuesLoader", "Calling get categories");
-      return service.getCategories();
-    }
+      @Override
+      public void onFailure(Call<List<Category>> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
   }
 
 }

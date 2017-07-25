@@ -19,15 +19,18 @@ package com.jugoterapia.josdem.service;
 import java.util.List;
 import com.jugoterapia.josdem.model.Category;
 
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 
 public interface JugoterapiaService {
 
   @GET("/jugoterapia-server/beverage/categories")
-  public List<Category> getCategories();
+  public Call<List<Category>> getCategories();
 
   public static final Retrofit retrofit = new Retrofit.Builder()
-          .baseUrl("https://api.github.com/")
+          .baseUrl("http://jugoterapia.josdem.io/")
           .addConverterFactory(GsonConverterFactory.create())
           .build();
 

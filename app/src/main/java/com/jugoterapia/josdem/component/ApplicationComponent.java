@@ -23,6 +23,4 @@ public interface ApplicationComponent {
 
   Application getApplication();
 
-  JugoterapiaService getCategories();
-
 }
