@@ -16,22 +16,19 @@
 
 package com.jugoterapia.josdem.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import com.jugoterapia.josdem.model.Category;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import retrofit.http.GET;
 
-@Singleton
-public class JugoterapiaService {
+public interface JugoterapiaService {
 
-  @Inject
-  public JugoterapiaService(){}
+  @GET("/jugoterapia-server/beverage/categories")
+  public List<Category> getCategories();
 
-
-  public List<Category> getCategories(){
-   return new ArrayList<>();
-  }
+  public static final Retrofit retrofit = new Retrofit.Builder()
+          .baseUrl("https://api.github.com/")
+          .addConverterFactory(GsonConverterFactory.create())
+          .build();
 
 }
