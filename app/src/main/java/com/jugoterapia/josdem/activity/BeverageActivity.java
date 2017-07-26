@@ -20,15 +20,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.jugoterapia.josdem.R;
+import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.model.Beverage;
+import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @understands It shows all beverages title based in category
@@ -42,6 +50,25 @@ public class BeverageActivity extends Activity {
 
   private ArrayAdapter<Beverage> adapter;
 
+
+  private void displayResults(List<Beverage> beverages) {
+    ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
+
+    ListView listView = (ListView) findViewById(R.id.listViewBeverages);
+    listView.setAdapter(adapter);
+
+    adapter.clear();
+    for (Beverage beverage : beverages) {
+      adapter.add(beverage);
+    }
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewClicked(parent, view, position, id);
+      }
+    });
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,13 +76,21 @@ public class BeverageActivity extends Activity {
 
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
-    Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
+    Integer categoryId = this.getIntent().getExtras().getInt("currentCategory");
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<List<Beverage>> call = jugoterapiaService.getBeverages(categoryId);
+    call.enqueue(new retrofit2.Callback<List<Beverage>>() {
 
-    Bundle params = new Bundle();
-    params.putInt("categoryId", this.getIntent().getExtras().getInt("currentCategory"));
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, beverageUri);
-    args.putParcelable(ARGS_PARAMS, params);
+      @Override
+      public void onResponse(Call<List<Beverage>> call, Response<List<Beverage>> response) {
+        displayResults(response.body());
+      }
+
+      @Override
+      public void onFailure(Call<List<Beverage>> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
 
   }
 
