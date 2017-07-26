@@ -24,13 +24,7 @@ public class ApplicationState {
 	//public static final String URL_MOBILE_SERVER = "http://192.168.100.4:8080";
 	public static final String URL_MOBILE_SERVER = "http://jugoterapia.josdem.io";
 	public static final String SERVICE_NAME = "/jugoterapia-server/beverage/";
-	public static final String CATEGORIES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "categories";
-	public static final String BEVERAGES_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverages";
-	public static final String RECIPE_URL = URL_MOBILE_SERVER + SERVICE_NAME + "beverage";
-
 	public static final String CONNECTION_TITLE = "Conexión";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
-	public static final String PARSING_CATEGORY_MESSAGE = "No fue posible obtener las categorías";
-	public static final String PARSING_BEVERAGE_MESSAGE = "No fue posible obtener las recetas";
-	public static final String PARSING_RECIPE_MESSAGE = "No fue posible obtener la receta";
+
 }

@@ -44,12 +44,7 @@ import retrofit2.Response;
 
 public class BeverageActivity extends Activity {
 
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
-
   private ArrayAdapter<Beverage> adapter;
-
 
   private void displayResults(List<Beverage> beverages) {
     ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);

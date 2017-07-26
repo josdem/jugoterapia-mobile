@@ -35,6 +35,9 @@ public interface JugoterapiaService {
   @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
   public Call<List<Beverage>> getBeverages(@Query("categoryId") Integer id);
 
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverage")
+  public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
+
   public static final Retrofit retrofit = new Retrofit.Builder()
           .baseUrl("http://jugoterapia.josdem.io/")
           .addConverterFactory(GsonConverterFactory.create())

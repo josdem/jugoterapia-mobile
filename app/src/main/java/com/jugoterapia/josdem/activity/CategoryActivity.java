@@ -46,10 +46,6 @@ import retrofit2.Response;
 
 public class CategoryActivity extends Activity {
 
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
-
   CategoryAdapter adapter;
 
   private ActivityComponent activityComponent;
@@ -95,10 +91,6 @@ public class CategoryActivity extends Activity {
     getActivityComponent().inject(this);
 
     setContentView(R.layout.activity_category);
-    Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, beverageUri);
-    args.putParcelable(ARGS_PARAMS, new Bundle());
 
     JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
     Call<List<Category>> call = jugoterapiaService.getCategories();
