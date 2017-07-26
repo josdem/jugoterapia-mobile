@@ -17,9 +17,10 @@
 package com.jugoterapia.josdem.activity;
 
 import java.util.List;
+
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -40,7 +41,7 @@ import retrofit2.Response;
  * @understands It shows juice categories
  */
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends Activity {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
