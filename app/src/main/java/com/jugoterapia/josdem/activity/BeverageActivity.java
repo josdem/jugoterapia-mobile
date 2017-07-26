@@ -26,14 +26,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
+import com.jugoterapia.josdem.component.ActivityComponent;
+import com.jugoterapia.josdem.component.DaggerActivityComponent;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
+import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -44,7 +51,11 @@ import retrofit2.Response;
 
 public class BeverageActivity extends Activity {
 
+  @Inject
+  JugoterapiaServiceImpl jugoterapiaService;
+
   private ArrayAdapter<Beverage> adapter;
+  private ActivityComponent activityComponent;
 
   private void displayResults(List<Beverage> beverages) {
     ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
@@ -64,15 +75,25 @@ public class BeverageActivity extends Activity {
     });
   }
 
+  public ActivityComponent getActivityComponent() {
+    if (activityComponent == null) {
+      activityComponent = DaggerActivityComponent.builder()
+              .activityModule(new ActivityModule(this))
+              .applicationComponent(JugoterapiaApplication.get(this).getComponent())
+              .build();
+    }
+    return activityComponent;
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_beverage);
+    getActivityComponent().inject(this);
 
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
     Integer categoryId = this.getIntent().getExtras().getInt("currentCategory");
-    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
     Call<List<Beverage>> call = jugoterapiaService.getBeverages(categoryId);
     call.enqueue(new retrofit2.Callback<List<Beverage>>() {
 

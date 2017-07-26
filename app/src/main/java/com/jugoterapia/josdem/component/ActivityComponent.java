@@ -1,5 +1,6 @@
 package com.jugoterapia.josdem.component;
 
+import com.jugoterapia.josdem.activity.BeverageActivity;
 import com.jugoterapia.josdem.activity.CategoryActivity;
 import com.jugoterapia.josdem.context.PerActivity;
 import com.jugoterapia.josdem.model.Category;
@@ -11,6 +12,7 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
-  void inject(CategoryActivity mainActivity);
+  void inject(CategoryActivity categoryActivity);
+  void inject(BeverageActivity beverageActivity);
 
 }
