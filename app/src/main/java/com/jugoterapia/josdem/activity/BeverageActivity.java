@@ -16,71 +16,77 @@
 
 package com.jugoterapia.josdem.activity;
 
-import java.util.List;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.bean.BeverageWrapper;
-import com.jugoterapia.josdem.loader.RestLoader;
-import com.jugoterapia.josdem.loader.RestResponse;
+import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.model.Beverage;
+import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @understands It shows all beverages title based in category
  */
 
-public class BeverageActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
-
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
+public class BeverageActivity extends Activity {
 
   private ArrayAdapter<Beverage> adapter;
+
+  private void displayResults(List<Beverage> beverages) {
+    ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
+
+    ListView listView = (ListView) findViewById(R.id.listViewBeverages);
+    listView.setAdapter(adapter);
+
+    adapter.clear();
+    for (Beverage beverage : beverages) {
+      adapter.add(beverage);
+    }
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewClicked(parent, view, position, id);
+      }
+    });
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_beverage);
 
-    FragmentManager fm = getSupportFragmentManager();
-    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
-    if (list == null){
-      list = new ListFragment();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.add(R.id.frameLayout, list);
-      ft.commit();
-    }
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
-    Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
+    Integer categoryId = this.getIntent().getExtras().getInt("currentCategory");
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<List<Beverage>> call = jugoterapiaService.getBeverages(categoryId);
+    call.enqueue(new retrofit2.Callback<List<Beverage>>() {
 
-    Bundle params = new Bundle();
-    params.putInt("categoryId", this.getIntent().getExtras().getInt("currentCategory"));
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, beverageUri);
-    args.putParcelable(ARGS_PARAMS, params);
+      @Override
+      public void onResponse(Call<List<Beverage>> call, Response<List<Beverage>> response) {
+        displayResults(response.body());
+      }
 
-    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
+      @Override
+      public void onFailure(Call<List<Beverage>> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
+
   }
 
   @Override
@@ -94,54 +100,12 @@ public class BeverageActivity extends FragmentActivity implements LoaderCallback
     this.getIntent().putExtra("currentCategory", savedInstanceState.getInt("currentCategory"));
   }
 
-  @Override
-  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    Uri action = args.getParcelable(ARGS_URI);
-    Bundle params = args.getParcelable(ARGS_PARAMS);
-    return new RestLoader(this, action, params);
-  }
-
-  @Override
-  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-    int code = data.getCode();
-    String json = data.getData();
-
-    if (code == 200 && !json.isEmpty()) {
-      ListView listView = (ListView) findViewById(R.id.listViewBeverages);
-      try {
-        json = "{beverages: " + json + "}";
-        BeverageWrapper response = new Gson().fromJson(json, BeverageWrapper.class);
-        List<Beverage> beverages = response.getBeverages();
-        adapter.clear();
-        for (Beverage beverage : beverages) {
-          adapter.add(beverage);
-        }
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            listViewClicked(parent, view, position, id);
-          }
-        });
-        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
-        layout.setVisibility(View.GONE);
-      } catch (JsonSyntaxException jse) {
-        Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.PARSING_BEVERAGE_MESSAGE, Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
-    }
-  }
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Beverage beverage = (Beverage) parent.getAdapter().getItem(position);
     Intent intent = new Intent(this, RecipeActivity.class);
     intent.putExtra("currentBeverage", beverage.getId());
     startActivity(intent);
-  }
-
-  @Override
-  public void onLoaderReset(Loader<RestResponse> arg0) {
   }
 
 }

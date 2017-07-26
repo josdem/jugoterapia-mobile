@@ -16,8 +16,7 @@
 
 package com.jugoterapia.josdem.activity;
 
-import java.util.StringTokenizer;
-
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -28,54 +27,69 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.loader.RestLoader;
+import com.jugoterapia.josdem.loader.Callback;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
+import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.BeverageSplitter;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @understands It shows beverage data such as title, ingredients and recipe
  */
 
-public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<RestResponse> {
-
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
+public class RecipeActivity extends Activity {
 
   private Beverage beverage;
+
+  private void displayResults(Beverage beverage) {
+    TextView name = (TextView) findViewById(R.id.name);
+    name.setText(beverage.getName());
+    TextView ingredients = (TextView) findViewById(R.id.ingredients);
+
+    ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
+
+    TextView recipeText = (TextView) findViewById(R.id.recipe);
+    recipeText.setText(beverage.getRecipe());
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe);
 
-    FragmentManager fm = getSupportFragmentManager();
-    ListFragment list = (ListFragment) fm.findFragmentById(R.id.frameLayout);
-    if (list == null){
-      list = new ListFragment();
-      FragmentTransaction ft = fm.beginTransaction();
-      ft.add(R.id.frameLayout, list);
-      ft.commit();
-    }
+    Integer beverageId = this.getIntent().getExtras().getInt("currentBeverage");
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<Beverage> call = jugoterapiaService.getBeverage(beverageId);
+    call.enqueue(new retrofit2.Callback<Beverage>() {
 
-    Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
+      @Override
+      public void onResponse(Call<Beverage> call, Response<Beverage> response) {
+        displayResults(response.body());
+      }
 
-    Bundle params = new Bundle();
-    params.putInt("beverageId", this.getIntent().getExtras().getInt("currentBeverage"));
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, recipeUri);
-    args.putParcelable(ARGS_PARAMS, params);
+      @Override
+      public void onFailure(Call<Beverage> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
 
-    getSupportLoaderManager().initLoader(LOADER_ID, args, this);
   }
 
   @Override
@@ -87,45 +101,6 @@ public class RecipeActivity extends FragmentActivity implements LoaderCallbacks<
   @Override
   public void onRestoreInstanceState(Bundle savedInstanceState) {
     this.getIntent().putExtra("currentCategory", savedInstanceState.getInt("currentBeverage"));
-  }
-
-  @Override
-  public Loader<RestResponse> onCreateLoader(int id, Bundle args) {
-    Uri action = args.getParcelable(ARGS_URI);
-    Bundle params = args.getParcelable(ARGS_PARAMS);
-    return new RestLoader(this, action, params);
-  }
-
-  @Override
-  public void onLoadFinished(Loader<RestResponse> loader, RestResponse data) {
-    int code = data.getCode();
-    String json = data.getData();
-
-    if (code == 200 && !json.isEmpty()) {
-      try {
-        beverage = new Gson().fromJson(json, Beverage.class);
-
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText(beverage.getName());
-        TextView ingredients = (TextView) findViewById(R.id.ingredients);
-
-        ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
-
-        TextView recipeText = (TextView) findViewById(R.id.recipe);
-        recipeText.setText(beverage.getRecipe());
-        FrameLayout layout = (FrameLayout) findViewById(R.id.frameLayout);
-        layout.setVisibility(View.GONE);
-      } catch (JsonSyntaxException jse) {
-        Log.i("exception: ", jse.toString());
-        Toast.makeText(this, ApplicationState.PARSING_RECIPE_MESSAGE, Toast.LENGTH_SHORT).show();
-      }
-    } else {
-      Toast.makeText(this, ApplicationState.CONNECTION_MESSAGE, Toast.LENGTH_SHORT).show();
-    }
-  }
-
-  @Override
-  public void onLoaderReset(Loader<RestResponse> arg0) {
   }
 
 }
