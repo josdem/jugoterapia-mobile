@@ -35,7 +35,10 @@ import com.jugoterapia.josdem.component.DaggerActivityComponent;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
+import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -47,6 +50,9 @@ import retrofit2.Response;
 public class CategoryActivity extends Activity {
 
   CategoryAdapter adapter;
+
+  @Inject
+  JugoterapiaServiceImpl jugoterapiaService;
 
   private ActivityComponent activityComponent;
 
@@ -92,7 +98,6 @@ public class CategoryActivity extends Activity {
 
     setContentView(R.layout.activity_category);
 
-    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
     Call<List<Category>> call = jugoterapiaService.getCategories();
     call.enqueue(new retrofit2.Callback<List<Category>>() {
 

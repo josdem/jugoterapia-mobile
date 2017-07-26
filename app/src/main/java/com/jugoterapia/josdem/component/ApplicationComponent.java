@@ -6,7 +6,7 @@ import android.content.Context;
 import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.context.ApplicationContext;
 import com.jugoterapia.josdem.module.ApplicationModule;
-import com.jugoterapia.josdem.service.JugoterapiaService;
+import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 
 import javax.inject.Singleton;
 
@@ -22,5 +22,7 @@ public interface ApplicationComponent {
   Context getContext();
 
   Application getApplication();
+
+  JugoterapiaServiceImpl getJugoterapiaServiceImpl();
 
 }
