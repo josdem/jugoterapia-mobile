@@ -37,6 +37,7 @@ import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.state.ApplicationState;
+import com.jugoterapia.josdem.util.ActivityComponentFactory;
 
 import javax.inject.Inject;
 
@@ -53,18 +54,6 @@ public class CategoryActivity extends Activity {
 
   @Inject
   JugoterapiaServiceImpl jugoterapiaService;
-
-  private ActivityComponent activityComponent;
-
-  public ActivityComponent getActivityComponent() {
-    if (activityComponent == null) {
-      activityComponent = DaggerActivityComponent.builder()
-              .activityModule(new ActivityModule(this))
-              .applicationComponent(JugoterapiaApplication.get(this).getComponent())
-              .build();
-    }
-    return activityComponent;
-  }
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Category selectedCategory = (Category) parent.getAdapter().getItem(position);
@@ -94,7 +83,7 @@ public class CategoryActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    getActivityComponent().inject(this);
+    ActivityComponentFactory.getActivityComponent(this).inject(this);
 
     setContentView(R.layout.activity_category);
 

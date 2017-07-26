@@ -37,6 +37,7 @@ import com.jugoterapia.josdem.module.ActivityModule;
 import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.state.ApplicationState;
+import com.jugoterapia.josdem.util.ActivityComponentFactory;
 
 import java.util.List;
 
@@ -55,7 +56,6 @@ public class BeverageActivity extends Activity {
   JugoterapiaServiceImpl jugoterapiaService;
 
   private ArrayAdapter<Beverage> adapter;
-  private ActivityComponent activityComponent;
 
   private void displayResults(List<Beverage> beverages) {
     ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
@@ -75,21 +75,11 @@ public class BeverageActivity extends Activity {
     });
   }
 
-  public ActivityComponent getActivityComponent() {
-    if (activityComponent == null) {
-      activityComponent = DaggerActivityComponent.builder()
-              .activityModule(new ActivityModule(this))
-              .applicationComponent(JugoterapiaApplication.get(this).getComponent())
-              .build();
-    }
-    return activityComponent;
-  }
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_beverage);
-    getActivityComponent().inject(this);
+    ActivityComponentFactory.getActivityComponent(this).inject(this);
 
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
