@@ -16,28 +16,21 @@
 
 package com.jugoterapia.josdem.activity;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
-import com.jugoterapia.josdem.component.ActivityComponent;
-import com.jugoterapia.josdem.component.DaggerActivityComponent;
 import com.jugoterapia.josdem.model.Category;
-import com.jugoterapia.josdem.module.ActivityModule;
-import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
-import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 

@@ -17,41 +17,15 @@
 package com.jugoterapia.josdem.activity;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.jugoterapia.josdem.JugoterapiaApplication;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.component.ActivityComponent;
-import com.jugoterapia.josdem.component.DaggerActivityComponent;
-import com.jugoterapia.josdem.loader.Callback;
-import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
-import com.jugoterapia.josdem.model.Category;
-import com.jugoterapia.josdem.module.ActivityModule;
-import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
-import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
 import com.jugoterapia.josdem.util.BeverageSplitter;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
