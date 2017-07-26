@@ -26,6 +26,7 @@ import android.widget.ListView;
 
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
+import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
@@ -43,10 +44,11 @@ import retrofit2.Response;
 
 public class CategoryActivity extends Activity {
 
-  CategoryAdapter adapter;
-
   @Inject
   JugoterapiaServiceImpl jugoterapiaService;
+
+  private CategoryAdapter adapter;
+  private ActivityComponent activityComponent;
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Category selectedCategory = (Category) parent.getAdapter().getItem(position);
@@ -76,7 +78,7 @@ public class CategoryActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ActivityComponentFactory.getActivityComponent(this).inject(this);
+    ActivityComponentFactory.getActivityComponent(activityComponent, this).inject(this);
 
     setContentView(R.layout.activity_category);
 

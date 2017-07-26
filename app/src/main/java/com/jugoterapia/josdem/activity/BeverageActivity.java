@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jugoterapia.josdem.R;
+import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
@@ -47,6 +48,7 @@ public class BeverageActivity extends Activity {
   JugoterapiaServiceImpl jugoterapiaService;
 
   private ArrayAdapter<Beverage> adapter;
+  private ActivityComponent activityComponent;
 
   private void displayResults(List<Beverage> beverages) {
     ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
@@ -70,7 +72,7 @@ public class BeverageActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_beverage);
-    ActivityComponentFactory.getActivityComponent(this).inject(this);
+    ActivityComponentFactory.getActivityComponent(activityComponent, this).inject(this);
 
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 

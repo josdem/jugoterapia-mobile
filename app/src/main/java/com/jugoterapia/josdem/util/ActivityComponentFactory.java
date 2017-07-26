@@ -25,15 +25,13 @@ import com.jugoterapia.josdem.module.ActivityModule;
 
 public class ActivityComponentFactory {
 
-  private static ActivityComponent activityComponent = null;
-
-  public static ActivityComponent getActivityComponent(Activity activity) {
-    if (activityComponent == null) {
-      activityComponent = DaggerActivityComponent.builder()
+  public static ActivityComponent getActivityComponent(ActivityComponent component, Activity activity) {
+    if (component == null) {
+      component = DaggerActivityComponent.builder()
               .activityModule(new ActivityModule(activity))
               .applicationComponent(JugoterapiaApplication.get(activity).getComponent())
               .build();
     }
-    return activityComponent;
+    return component;
   }
 }

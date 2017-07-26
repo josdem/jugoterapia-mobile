@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.jugoterapia.josdem.R;
+import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
@@ -42,6 +43,7 @@ public class RecipeActivity extends Activity {
   JugoterapiaServiceImpl jugoterapiaService;
 
   private Beverage beverage;
+  private ActivityComponent activityComponent;
 
   private void displayResults(Beverage beverage) {
     TextView name = (TextView) findViewById(R.id.name);
@@ -58,7 +60,7 @@ public class RecipeActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe);
-    ActivityComponentFactory.getActivityComponent(this).inject(this);
+    ActivityComponentFactory.getActivityComponent(activityComponent, this).inject(this);
 
     Integer beverageId = this.getIntent().getExtras().getInt("currentBeverage");
     Call<Beverage> call = jugoterapiaService.getBeverage(beverageId);
