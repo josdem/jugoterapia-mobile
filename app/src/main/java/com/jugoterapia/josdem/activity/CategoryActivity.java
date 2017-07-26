@@ -19,9 +19,12 @@ package com.jugoterapia.josdem.activity;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.jugoterapia.josdem.JugoterapiaApplication;
@@ -61,6 +64,13 @@ public class CategoryActivity extends Activity {
     return activityComponent;
   }
 
+  private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
+    Category selectedCategory = (Category) parent.getAdapter().getItem(position);
+    Intent intent = new Intent(this, BeverageActivity.class);
+    intent.putExtra("currentCategory", selectedCategory.getId());
+    startActivity(intent);
+  }
+
   private void displayResults(List<Category> categories) {
     CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category);
 
@@ -71,6 +81,12 @@ public class CategoryActivity extends Activity {
     for (Category category : categories) {
       adapter.add(category);
     }
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewClicked(parent, view, position, id);
+      }
+    });
   }
 
   @Override

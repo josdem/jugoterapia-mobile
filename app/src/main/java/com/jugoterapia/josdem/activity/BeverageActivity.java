@@ -16,42 +16,25 @@
 
 package com.jugoterapia.josdem.activity;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.bean.BeverageWrapper;
-import com.jugoterapia.josdem.loader.Callback;
-import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
-import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import java.util.List;
 
 /**
  * @understands It shows all beverages title based in category
  */
 
-public class BeverageActivity extends Activity implements Callback<List<Beverage>> {
+public class BeverageActivity extends Activity {
 
   private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
   private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
@@ -95,13 +78,4 @@ public class BeverageActivity extends Activity implements Callback<List<Beverage
     startActivity(intent);
   }
 
-  @Override
-  public void onFailure(Exception ex) {
-
-  }
-
-  @Override
-  public void onSuccess(List<Beverage> result) {
-
-  }
 }
