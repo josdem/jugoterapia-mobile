@@ -16,48 +16,53 @@
 
 package com.jugoterapia.josdem.activity;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.bean.BeverageWrapper;
-import com.jugoterapia.josdem.loader.Callback;
-import com.jugoterapia.josdem.loader.RestResponse;
+import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @understands It shows all beverages title based in category
  */
 
-public class BeverageActivity extends Activity implements Callback<List<Beverage>> {
-
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
+public class BeverageActivity extends Activity {
 
   private ArrayAdapter<Beverage> adapter;
+
+  private void displayResults(List<Beverage> beverages) {
+    ArrayAdapter adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
+
+    ListView listView = (ListView) findViewById(R.id.listViewBeverages);
+    listView.setAdapter(adapter);
+
+    adapter.clear();
+    for (Beverage beverage : beverages) {
+      adapter.add(beverage);
+    }
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewClicked(parent, view, position, id);
+      }
+    });
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -66,13 +71,21 @@ public class BeverageActivity extends Activity implements Callback<List<Beverage
 
     adapter = new ArrayAdapter<Beverage>(this, R.layout.list_beverage);
 
-    Uri beverageUri = Uri.parse(ApplicationState.BEVERAGES_URL);
+    Integer categoryId = this.getIntent().getExtras().getInt("currentCategory");
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<List<Beverage>> call = jugoterapiaService.getBeverages(categoryId);
+    call.enqueue(new retrofit2.Callback<List<Beverage>>() {
 
-    Bundle params = new Bundle();
-    params.putInt("categoryId", this.getIntent().getExtras().getInt("currentCategory"));
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, beverageUri);
-    args.putParcelable(ARGS_PARAMS, params);
+      @Override
+      public void onResponse(Call<List<Beverage>> call, Response<List<Beverage>> response) {
+        displayResults(response.body());
+      }
+
+      @Override
+      public void onFailure(Call<List<Beverage>> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
 
   }
 
@@ -95,13 +108,4 @@ public class BeverageActivity extends Activity implements Callback<List<Beverage
     startActivity(intent);
   }
 
-  @Override
-  public void onFailure(Exception ex) {
-
-  }
-
-  @Override
-  public void onSuccess(List<Beverage> result) {
-
-  }
 }

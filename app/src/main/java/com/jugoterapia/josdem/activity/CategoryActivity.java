@@ -17,10 +17,14 @@
 package com.jugoterapia.josdem.activity;
 
 import java.util.List;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.jugoterapia.josdem.JugoterapiaApplication;
@@ -40,11 +44,7 @@ import retrofit2.Response;
  * @understands It shows juice categories
  */
 
-public class CategoryActivity extends AppCompatActivity {
-
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
+public class CategoryActivity extends Activity {
 
   CategoryAdapter adapter;
 
@@ -60,6 +60,13 @@ public class CategoryActivity extends AppCompatActivity {
     return activityComponent;
   }
 
+  private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
+    Category selectedCategory = (Category) parent.getAdapter().getItem(position);
+    Intent intent = new Intent(this, BeverageActivity.class);
+    intent.putExtra("currentCategory", selectedCategory.getId());
+    startActivity(intent);
+  }
+
   private void displayResults(List<Category> categories) {
     CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category);
 
@@ -70,6 +77,12 @@ public class CategoryActivity extends AppCompatActivity {
     for (Category category : categories) {
       adapter.add(category);
     }
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewClicked(parent, view, position, id);
+      }
+    });
   }
 
   @Override
@@ -78,10 +91,6 @@ public class CategoryActivity extends AppCompatActivity {
     getActivityComponent().inject(this);
 
     setContentView(R.layout.activity_category);
-    Uri beverageUri = Uri.parse(ApplicationState.CATEGORIES_URL);
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, beverageUri);
-    args.putParcelable(ARGS_PARAMS, new Bundle());
 
     JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
     Call<List<Category>> call = jugoterapiaService.getCategories();

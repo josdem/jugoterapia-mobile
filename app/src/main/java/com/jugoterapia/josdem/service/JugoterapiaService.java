@@ -17,17 +17,26 @@
 package com.jugoterapia.josdem.service;
 
 import java.util.List;
+
+import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface JugoterapiaService {
 
   @GET("/jugoterapia-server/beverage/categories")
   public Call<List<Category>> getCategories();
+
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
+  public Call<List<Beverage>> getBeverages(@Query("categoryId") Integer id);
+
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverage")
+  public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
           .baseUrl("http://jugoterapia.josdem.io/")

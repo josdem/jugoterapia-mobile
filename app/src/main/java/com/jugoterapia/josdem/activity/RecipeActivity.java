@@ -27,7 +27,10 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,35 +41,54 @@ import com.jugoterapia.josdem.loader.Callback;
 import com.jugoterapia.josdem.loader.RestResponse;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.service.JugoterapiaService;
 import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.BeverageSplitter;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 /**
  * @understands It shows beverage data such as title, ingredients and recipe
  */
 
-public class RecipeActivity extends Activity implements Callback<List<Beverage>> {
-
-  private static final String ARGS_URI = "com.jugoterapia.android.activity.ARGS_URI";
-  private static final String ARGS_PARAMS = "com.jugoterapia.android.activity.ARGS_PARAMS";
-  private static final int LOADER_ID = 0x1;
+public class RecipeActivity extends Activity {
 
   private Beverage beverage;
+
+  private void displayResults(Beverage beverage) {
+    TextView name = (TextView) findViewById(R.id.name);
+    name.setText(beverage.getName());
+    TextView ingredients = (TextView) findViewById(R.id.ingredients);
+
+    ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
+
+    TextView recipeText = (TextView) findViewById(R.id.recipe);
+    recipeText.setText(beverage.getRecipe());
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe);
 
-    Uri recipeUri = Uri.parse(ApplicationState.RECIPE_URL);
+    Integer beverageId = this.getIntent().getExtras().getInt("currentBeverage");
+    JugoterapiaService jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
+    Call<Beverage> call = jugoterapiaService.getBeverage(beverageId);
+    call.enqueue(new retrofit2.Callback<Beverage>() {
 
-    Bundle params = new Bundle();
-    params.putInt("beverageId", this.getIntent().getExtras().getInt("currentBeverage"));
-    Bundle args = new Bundle();
-    args.putParcelable(ARGS_URI, recipeUri);
-    args.putParcelable(ARGS_PARAMS, params);
+      @Override
+      public void onResponse(Call<Beverage> call, Response<Beverage> response) {
+        displayResults(response.body());
+      }
+
+      @Override
+      public void onFailure(Call<Beverage> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
 
   }
 
@@ -81,13 +103,4 @@ public class RecipeActivity extends Activity implements Callback<List<Beverage>>
     this.getIntent().putExtra("currentCategory", savedInstanceState.getInt("currentBeverage"));
   }
 
-  @Override
-  public void onFailure(Exception ex) {
-
-  }
-
-  @Override
-  public void onSuccess(List<Beverage> result) {
-
-  }
 }
