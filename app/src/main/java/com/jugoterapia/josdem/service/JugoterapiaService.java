@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.state.ApplicationState;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -39,7 +40,7 @@ public interface JugoterapiaService {
   public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
-          .baseUrl("http://jugoterapia.josdem.io/")
+          .baseUrl(ApplicationState.URL_MOBILE_SERVER)
           .addConverterFactory(GsonConverterFactory.create())
           .build();
 

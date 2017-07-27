@@ -17,14 +17,8 @@
 package com.jugoterapia.josdem.state;
 
 public class ApplicationState {
-	/**
-	 * uncomment when localhost
-	 */
-
 	//public static final String URL_MOBILE_SERVER = "http://192.168.100.4:8080";
 	public static final String URL_MOBILE_SERVER = "http://jugoterapia.josdem.io";
-	public static final String SERVICE_NAME = "/jugoterapia-server/beverage/";
 	public static final String CONNECTION_TITLE = "Mensaje";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
-
 }
