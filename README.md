@@ -9,7 +9,7 @@ Jugoterapia is an Android application mainly fosued in improve your healty based
 gradle test
 ```
 
-#### Read this as reference
+#### Go here for more information
 
 http://josdem.io/jugoterapia/jugoterapia/
 
