@@ -24,7 +24,7 @@ import android.content.DialogInterface;
 
 public class ConnectionDialog {
 
-	public ConnectionDialog(final Activity activity) {
+	public static void show(final Activity activity) {
 		new AlertDialog.Builder(activity)
 		.setTitle(ApplicationState.CONNECTION_TITLE)
 		.setMessage(ApplicationState.CONNECTION_MESSAGE)

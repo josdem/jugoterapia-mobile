@@ -30,6 +30,7 @@ import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
+import com.jugoterapia.josdem.util.ConnectionDialog;
 
 import java.util.List;
 
@@ -92,8 +93,10 @@ public class CategoryActivity extends Activity {
 
       @Override
       public void onFailure(Call<List<Category>> call, Throwable t) {
+        ConnectionDialog.show(CategoryActivity.this);
         Log.d("error", t.getMessage());
       }
+
     });
   }
 
