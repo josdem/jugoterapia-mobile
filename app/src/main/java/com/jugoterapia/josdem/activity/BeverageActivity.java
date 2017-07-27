@@ -30,6 +30,7 @@ import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
+import com.jugoterapia.josdem.util.ConnectionDialog;
 
 import java.util.List;
 
@@ -87,6 +88,7 @@ public class BeverageActivity extends Activity {
 
       @Override
       public void onFailure(Call<List<Beverage>> call, Throwable t) {
+        ConnectionDialog.show(BeverageActivity.this);
         Log.d("error", t.getMessage());
       }
     });

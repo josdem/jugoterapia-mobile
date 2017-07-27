@@ -27,6 +27,7 @@ import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
 import com.jugoterapia.josdem.util.BeverageSplitter;
+import com.jugoterapia.josdem.util.ConnectionDialog;
 
 import javax.inject.Inject;
 
@@ -73,6 +74,7 @@ public class RecipeActivity extends Activity {
 
       @Override
       public void onFailure(Call<Beverage> call, Throwable t) {
+        ConnectionDialog.show(RecipeActivity.this);
         Log.d("error", t.getMessage());
       }
     });
