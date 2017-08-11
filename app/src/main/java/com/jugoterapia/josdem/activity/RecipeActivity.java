@@ -19,6 +19,7 @@ package com.jugoterapia.josdem.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jugoterapia.josdem.R;
@@ -49,6 +50,8 @@ public class RecipeActivity extends Activity {
   private void displayResults(Beverage beverage) {
     TextView name = (TextView) findViewById(R.id.name);
     name.setText(beverage.getName());
+    ImageView image = (ImageView) findViewById(R.id.image);
+    image.setImageResource(R.drawable.green_juice);
     TextView ingredients = (TextView) findViewById(R.id.ingredients);
 
     ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
