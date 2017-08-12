@@ -29,6 +29,7 @@ import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
 import com.jugoterapia.josdem.util.BeverageSplitter;
 import com.jugoterapia.josdem.util.ConnectionDialog;
+import com.jugoterapia.josdem.util.ImageResolver;
 
 import javax.inject.Inject;
 
@@ -50,10 +51,11 @@ public class RecipeActivity extends Activity {
   private void displayResults(Beverage beverage) {
     TextView name = (TextView) findViewById(R.id.name);
     name.setText(beverage.getName());
-    ImageView image = (ImageView) findViewById(R.id.image);
-    image.setImageResource(R.drawable.green_juice);
-    TextView ingredients = (TextView) findViewById(R.id.ingredients);
 
+    ImageView image = (ImageView) findViewById(R.id.image);
+    ImageResolver.setImage(image, beverage);
+
+    TextView ingredients = (TextView) findViewById(R.id.ingredients);
     ingredients.setText(BeverageSplitter.split(beverage.getIngredients()));
 
     TextView recipeText = (TextView) findViewById(R.id.recipe);
