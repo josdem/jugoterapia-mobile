@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jugoterapia.josdem"
-    android:versionCode="20"
-    android:versionName="0.2.3" >
+    android:versionCode="21"
+    android:versionName="0.2.4" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -15,8 +15,7 @@
         android:name=".JugoterapiaApplication"
         android:theme="@style/jugoterapiaTheme" >
         <activity
-            android:name=".activity.CategoryActivity"
-            android:label="@string/title_activity_login" >
+            android:name=".activity.CategoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
