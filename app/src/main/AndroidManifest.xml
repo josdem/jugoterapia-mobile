@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jugoterapia.josdem"
-    android:versionCode="21"
+    android:versionCode="22"
     android:versionName="0.2.5" >
 
     <uses-sdk
