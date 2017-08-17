@@ -1,44 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical" >
-    
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:text="Name"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="190dp"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
-        android:padding="5dp" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:orientation="vertical"
+                  android:paddingLeft="16dp"
+                  android:paddingRight="16dp">
 
-     <TextView
-         android:id="@+id/ingredients"
-         android:layout_marginTop="20dp"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Ingredients" />
 
-     <TextView
-         android:id="@+id/recipe"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Recipe" />
-     
-     <FrameLayout 
-	    android:id="@+id/frameLayout"
-	    android:layout_marginTop="20dp"
-	    android:layout_width="30dp"
-    	android:layout_height="30dp"
-     />
-        
-</LinearLayout>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="Name"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="190dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Ingredients"/>
+
+        <TextView
+            android:id="@+id/recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipe"/>
+
+
+    </LinearLayout>
+</ScrollView>
