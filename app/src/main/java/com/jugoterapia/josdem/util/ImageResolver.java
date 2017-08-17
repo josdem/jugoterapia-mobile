@@ -24,8 +24,8 @@ import com.jugoterapia.josdem.model.Beverage;
 public class ImageResolver {
 
   public static void setImage(ImageView image, Beverage beverage){
-    if(beverage.getId() == 17){
-      image.setImageResource(R.drawable.green_juice);
+    if(beverage.getId() == 35){
+      image.setImageResource(R.drawable._35);
     } else {
       image.setImageResource(R.drawable.no_image);
     }
