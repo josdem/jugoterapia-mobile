@@ -1,7 +1,7 @@
 Jugoterapia Mobile
 ----------------------------------------------
 
-Jugoterapia is an Android application mainly fosued in improve your healty based in juice recipes, this application is only available in spanish language.
+Jugoterapia is an Android application mainly focused in improve your healty based in juice recipes, this application is only available in spanish language.
 
 #### To run tests
 
