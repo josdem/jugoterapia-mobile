@@ -1,9 +1,9 @@
 package com.jugoterapia.josdem.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.content.Intent;
 import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
