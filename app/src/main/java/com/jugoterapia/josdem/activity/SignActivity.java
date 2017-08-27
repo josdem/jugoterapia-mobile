@@ -30,6 +30,11 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign);
+
+    if(!ApplicationState.CURRENT_USER.isEmpty()){
+      startCategoryActivity();
+    }
+
     statusTextView = (TextView) findViewById(R.id.status);
 
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,11 +82,16 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
       signInButton.setVisibility(View.GONE);
       GoogleSignInAccount account = result.getSignInAccount();
       ApplicationState.CURRENT_USER = account.getEmail();
-      Intent intent = new Intent(this, CategoryActivity.class);
-      startActivity(intent);
+      startCategoryActivity();
     } else {
       statusTextView.setText(getText(R.string.failure_sign));
     }
+  }
+
+  private void startCategoryActivity(){
+    Intent intent = new Intent(this, CategoryActivity.class);
+    startActivity(intent);
+    finish();
   }
 
 }
