@@ -8,13 +8,14 @@ import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jugoterapia.josdem.R;
-import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.state.ApplicationState;
 
 public class SignActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -74,6 +75,8 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     Log.d(TAG, "handleSignInResult:" + result.isSuccess());
     if (result.isSuccess()) {
       signInButton.setVisibility(View.GONE);
+      GoogleSignInAccount account = result.getSignInAccount();
+      ApplicationState.CURRENT_USER = account.getEmail();
       Intent intent = new Intent(this, CategoryActivity.class);
       startActivity(intent);
     } else {
