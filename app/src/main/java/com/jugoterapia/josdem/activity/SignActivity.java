@@ -8,13 +8,13 @@ import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jugoterapia.josdem.R;
+import com.jugoterapia.josdem.model.Category;
 
 public class SignActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -73,11 +73,11 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   private void handleSignInResult(GoogleSignInResult result) {
     Log.d(TAG, "handleSignInResult:" + result.isSuccess());
     if (result.isSuccess()) {
-      GoogleSignInAccount account = result.getSignInAccount();
-      statusTextView.setText("Signed as: " + account.getEmail());
       signInButton.setVisibility(View.GONE);
+      Intent intent = new Intent(this, CategoryActivity.class);
+      startActivity(intent);
     } else {
-      statusTextView.setText("Singed in unsuccessfully");
+      statusTextView.setText(getText(R.string.failure_sign));
     }
   }
 
