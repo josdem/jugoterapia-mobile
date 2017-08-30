@@ -22,7 +22,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   private static final int RC_SIGN_IN = 9001;
   private static final String TAG = "Oauth2Google";
 
-  private GoogleApiClient mGoogleApiClient;
+  private GoogleApiClient googleApiClient;
   private TextView statusTextView;
   private SignInButton signInButton;
 
@@ -41,7 +41,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
             .requestEmail()
             .build();
 
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
+    googleApiClient = new GoogleApiClient.Builder(this)
             .enableAutoManage(this, this)
             .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build();
@@ -57,7 +57,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   }
 
   private void signIn() {
-    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
     startActivityForResult(signInIntent, RC_SIGN_IN);
   }
 
