@@ -16,8 +16,11 @@
 
 package com.jugoterapia.josdem.service.impl;
 
+import android.util.Log;
+
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.service.JugoterapiaService;
 
 import java.util.List;
@@ -26,6 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Query;
 
 @Singleton
@@ -51,6 +55,12 @@ public class JugoterapiaServiceImpl implements JugoterapiaService {
   @Override
   public Call<Beverage> getBeverage(@Query("beverageId") Integer id) {
     return jugoterapiaService.getBeverage(id);
+  }
+
+  @Override
+  public Call<Credentials> sendCredentials(@Body Credentials credentials) {
+    Log.d("credentials: ", credentials.getName() + " : " + credentials.getEmail() + " : " + credentials.getToken());
+    return jugoterapiaService.sendCredentials(credentials);
   }
 
 }

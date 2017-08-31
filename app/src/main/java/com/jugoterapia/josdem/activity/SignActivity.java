@@ -30,9 +30,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.jugoterapia.josdem.service.JugoterapiaService;
+import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import javax.inject.Inject;
 
 /**
  * @understands It handle user's authentication using Google oauth2
@@ -46,6 +50,8 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   private GoogleApiClient mGoogleApiClient;
   private TextView statusTextView;
   private SignInButton signInButton;
+
+  JugoterapiaService jugoterapiaService = new JugoterapiaServiceImpl();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +121,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     credentials.setName(account.getDisplayName());
     credentials.setEmail(account.getEmail());
     credentials.setToken(account.getIdToken());
-    //TODO: Send credentials to the server
+    jugoterapiaService.sendCredentials(credentials);
   }
 
   private void startCategoryActivity(){

@@ -20,24 +20,32 @@ import java.util.List;
 
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
+import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface JugoterapiaService {
 
-  @GET("/jugoterapia-server/beverage/categories")
+  @GET("http://192.168.100.4:8080/beverage/categories")
   public Call<List<Category>> getCategories();
 
-  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
+  @GET("http://192.168.100.4:8080/beverage/beverages")
   public Call<List<Beverage>> getBeverages(@Query("categoryId") Integer id);
 
-  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverage")
+  @GET("http://192.168.100.4:8080/beverage/beverage")
   public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
+
+  @POST("http://192.168.100.4:8080/auth/validate")
+  public Call<Credentials> sendCredentials(@Body Credentials credentials);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
           .baseUrl(ApplicationState.URL_MOBILE_SERVER)
