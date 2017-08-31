@@ -65,6 +65,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     statusTextView = (TextView) findViewById(R.id.status);
 
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("32574108001-ilfes7jvpqh15agrcd0q9vpuv8cuea13.apps.googleusercontent.com")
             .requestEmail()
             .build();
 
@@ -98,7 +99,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     super.onActivityResult(requestCode, resultCode, data);
 
     if (requestCode == RC_SIGN_IN) {
-      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data); 
+      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
       handleSignInResult(result);
     }
   }
