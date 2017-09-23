@@ -109,15 +109,15 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
 
   private void handleSignInResult(GoogleSignInResult result) {
     Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+    signInButton.setVisibility(View.GONE);
     if (result.isSuccess()) {
-      signInButton.setVisibility(View.GONE);
       GoogleSignInAccount account = result.getSignInAccount();
       ApplicationState.CURRENT_USER = account.getEmail();
       sendCredentials(account);
-      startCategoryActivity();
     } else {
-      statusTextView.setText(getText(R.string.failure_sign));
+      Log.d("response: ", result.toString());
     }
+    startCategoryActivity();
   }
 
   private void sendCredentials(GoogleSignInAccount account) {
