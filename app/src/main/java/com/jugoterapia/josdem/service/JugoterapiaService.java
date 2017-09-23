@@ -36,17 +36,17 @@ import retrofit2.http.Query;
 
 public interface JugoterapiaService {
 
-  @GET("http://192.168.100.4:8080/beverage/categories")
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/categories")
   public Call<List<Category>> getCategories();
 
-  @GET("http://192.168.100.4:8080/beverage/beverages")
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
   public Call<List<Beverage>> getBeverages(@Query("categoryId") Integer id);
 
-  @GET("http://192.168.100.4:8080/beverage/beverage")
+  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverage")
   public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
 
   @Headers("Content-Type: application/json")
-  @POST("http://192.168.100.4:8080/auth/validate")
+  @POST("http://jugoterapia.josdem.io/jugoterapia-server/auth/validate")
   public Call<Credentials> sendCredentials(@Body Credentials credentials);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
