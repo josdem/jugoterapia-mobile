@@ -30,6 +30,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -44,6 +45,7 @@ public interface JugoterapiaService {
   @GET("http://192.168.100.4:8080/beverage/beverage")
   public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
 
+  @Headers("Content-Type: application/json")
   @POST("http://192.168.100.4:8080/auth/validate")
   public Call<Credentials> sendCredentials(@Body Credentials credentials);
 

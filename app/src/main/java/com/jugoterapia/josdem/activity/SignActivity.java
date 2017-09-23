@@ -31,12 +31,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jugoterapia.josdem.service.JugoterapiaService;
-import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @understands It handle user's authentication using Google oauth2
@@ -51,7 +54,7 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
   private TextView statusTextView;
   private SignInButton signInButton;
 
-  JugoterapiaService jugoterapiaService = new JugoterapiaServiceImpl();
+  JugoterapiaService jugoterapiaService;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     if(!ApplicationState.CURRENT_USER.isEmpty()){
       startCategoryActivity();
     }
+
+    jugoterapiaService = JugoterapiaService.retrofit.create(JugoterapiaService.class);
 
     statusTextView = (TextView) findViewById(R.id.status);
 
@@ -122,7 +127,20 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     credentials.setName(account.getDisplayName());
     credentials.setEmail(account.getEmail());
     credentials.setToken(account.getIdToken());
-    jugoterapiaService.sendCredentials(credentials);
+    Call<Credentials> call = jugoterapiaService.sendCredentials(credentials);
+    call.enqueue(new Callback<Credentials>() {
+
+      @Override
+      public void onResponse(Call<Credentials> call, Response<Credentials> response) {
+        Log.d("credentials:", response.body().toString());
+      }
+
+      @Override
+      public void onFailure(Call<Credentials> call, Throwable t) {
+        Log.d("error", t.getMessage());
+      }
+    });
+
   }
 
   private void startCategoryActivity(){
