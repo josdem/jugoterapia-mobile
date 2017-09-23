@@ -35,8 +35,6 @@ import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.state.ApplicationState;
 
-import javax.inject.Inject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
