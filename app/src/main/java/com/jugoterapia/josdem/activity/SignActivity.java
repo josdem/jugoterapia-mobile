@@ -16,6 +16,8 @@
 
 package com.jugoterapia.josdem.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,7 +61,10 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign);
 
-    if(!ApplicationState.CURRENT_USER.isEmpty()){
+    SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+    String user = sharedPreferences.getString("user", "");
+
+    if(!user.isEmpty()){
       startCategoryActivity();
     }
 
@@ -112,7 +117,11 @@ public class SignActivity extends FragmentActivity implements GoogleApiClient.On
     signInButton.setVisibility(View.GONE);
     if (result.isSuccess()) {
       GoogleSignInAccount account = result.getSignInAccount();
-      ApplicationState.CURRENT_USER = account.getEmail();
+
+      SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putString("user", account.getEmail()).commit();
+
       sendCredentials(account);
     } else {
       Log.d("response: ", result.toString());
