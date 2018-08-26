@@ -1,6 +1,7 @@
 .idea
 .gradle
 app/build
+app/release
 build
 jugoterapia-mobile.iml
 local.properties
