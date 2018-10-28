@@ -4,4 +4,5 @@
     <string name="title_activity_login">Jugoterapia</string>
     <string name="title_activity_sign">SignActivity</string>
     <string name="failure_sign">No se pudo autenticar con Google</string>
+    <string name="ingredients">Ingredientes</string>
 </resources>
