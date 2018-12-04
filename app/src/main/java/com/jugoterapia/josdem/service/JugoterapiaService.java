@@ -27,23 +27,21 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 
 public interface JugoterapiaService {
 
   @GET("https://webflux.josdem.io/categories/")
   public Call<List<Category>> getCategories();
 
-  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
-  public Call<List<Beverage>> getBeverages(@Query("categoryId") Integer id);
+  @GET("https://webflux.josdem.io/categories/{categoryId}/beverages")
+  public Call<List<Beverage>> getBeverages(@Path("categoryId") Integer id);
 
-  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverage")
-  public Call<Beverage> getBeverage(@Query("beverageId") Integer id);
+  @GET("https://webflux.josdem.io/beverages/{beverageId}")
+  public Call<Beverage> getBeverage(@Path("beverageId") Integer id);
 
   @Headers("Content-Type: application/json")
   @POST("http://jugoterapia.josdem.io/jugoterapia-server/auth/validate")
