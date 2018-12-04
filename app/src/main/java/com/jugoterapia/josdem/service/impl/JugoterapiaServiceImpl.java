@@ -57,10 +57,4 @@ public class JugoterapiaServiceImpl implements JugoterapiaService {
     return jugoterapiaService.getBeverage(id);
   }
 
-  @Override
-  public Call<Credentials> sendCredentials(@Body Credentials credentials) {
-    Log.d("credentials: ", credentials.getName() + " : " + credentials.getEmail() + " : " + credentials.getToken());
-    return jugoterapiaService.sendCredentials(credentials);
-  }
-
 }
