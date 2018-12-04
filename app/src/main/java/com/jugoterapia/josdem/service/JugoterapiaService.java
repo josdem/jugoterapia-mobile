@@ -36,7 +36,7 @@ import retrofit2.http.Query;
 
 public interface JugoterapiaService {
 
-  @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/categories")
+  @GET("https://webflux.josdem.io/categories/")
   public Call<List<Category>> getCategories();
 
   @GET("http://jugoterapia.josdem.io/jugoterapia-server/beverage/beverages")
