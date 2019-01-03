@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">Jugoterapia</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_login">Jugoterapia</string>
-    <string name="title_activity_sign">SignActivity</string>
-    <string name="failure_sign">No se pudo autenticar con Google</string>
-    <string name="ingredients">Ingredientes</string>
-    <string name="recipe">Receta</string>
-    <string name="name">Name</string>
+  <string name="app_name">Jugoterapia</string>
+  <string name="menu_settings">Configuración</string>
+  <string name="title_activity_login">Jugoterapia</string>
+  <string name="failure_sign">No se pudo autenticar con Google</string>
+  <string name="ingredients">Ingredientes</string>
+  <string name="recipe">Receta</string>
+  <string name="name">Nombre</string>
 </resources>
