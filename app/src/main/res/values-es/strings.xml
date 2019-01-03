@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Jugoterapia</string>
+  <string name="menu_settings">Configuración</string>
+  <string name="ingredients">Ingredientes</string>
+  <string name="recipe">Receta</string>
+  <string name="name">Nombre</string>
+</resources>
