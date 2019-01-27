@@ -43,8 +43,8 @@ public class JugoterapiaServiceImpl implements JugoterapiaService {
   }
 
   @Override
-  public Call<List<Category>> getCategories() {
-    return jugoterapiaService.getCategories();
+  public Call<List<Category>> getCategories(@Query("language") String language) {
+    return jugoterapiaService.getCategories(language);
   }
 
   @Override
