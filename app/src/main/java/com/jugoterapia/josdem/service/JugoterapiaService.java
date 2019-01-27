@@ -30,8 +30,8 @@ import retrofit2.http.Path;
 
 public interface JugoterapiaService {
 
-  @GET("https://webflux.josdem.io/categories/")
-  public Call<List<Category>> getCategories();
+  @GET("https://webflux.josdem.io/categories/{language}")
+  public Call<List<Category>> getCategories(@Path("language") String language);
 
   @GET("https://webflux.josdem.io/categories/{categoryId}/beverages")
   public Call<List<Beverage>> getBeverages(@Path("categoryId") Integer id);
