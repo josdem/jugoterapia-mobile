@@ -16,18 +16,17 @@
 
 package com.jugoterapia.josdem.service;
 
-import java.util.List;
-
 import com.jugoterapia.josdem.model.Beverage;
 import com.jugoterapia.josdem.model.Category;
-import com.jugoterapia.josdem.model.Credentials;
 import com.jugoterapia.josdem.state.ApplicationState;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public interface JugoterapiaService {
 
