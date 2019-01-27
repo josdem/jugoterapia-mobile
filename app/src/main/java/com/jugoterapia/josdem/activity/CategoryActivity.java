@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
@@ -83,7 +84,9 @@ public class CategoryActivity extends Activity {
 
     setContentView(R.layout.activity_category);
 
-    Call<List<Category>> call = jugoterapiaService.getCategories();
+    String language = getString(R.string.language);
+
+    Call<List<Category>> call = jugoterapiaService.getCategories(language);
     call.enqueue(new retrofit2.Callback<List<Category>>() {
 
       @Override
