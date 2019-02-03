@@ -21,6 +21,7 @@ public class Beverage {
   private String name;
   private String ingredients;
   private String recipe;
+  private String image;
   private Long categoryId;
 
   public Integer getId() {
@@ -53,6 +54,14 @@ public class Beverage {
 
   public void setRecipe(String recipe) {
     this.recipe = recipe;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public Long getCategoryId() {
