@@ -16,18 +16,30 @@
 
 package com.jugoterapia.josdem.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.model.Beverage;
 
+import java.net.URL;
+import java.io.IOException;
+
 public class ImageResolver {
 
-  public static void setImage(ImageView image, Beverage beverage){
-    if(beverage.getId() == 66 || beverage.getId() == 83){
-      image.setImageResource(R.drawable._66);
-    } else {
+  public static void setImage(ImageView image, Beverage beverage) {
+    if(beverage.getImage() == ""){
       image.setImageResource(R.drawable.no_image);
+    } else {
+      try {
+        URL url = new URL(beverage.getImage());
+        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        image.setImageBitmap(bmp);
+      } catch (IOException ioe){
+        Log.d("error", ioe.getMessage());
+      }
     }
   }
 
