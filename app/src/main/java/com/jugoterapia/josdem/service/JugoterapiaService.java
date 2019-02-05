@@ -30,13 +30,13 @@ import retrofit2.http.Path;
 
 public interface JugoterapiaService {
 
-  @GET("https://webflux.josdem.io/categories/{language}")
+  @GET("https://qa.josdem.io/categories/{language}")
   public Call<List<Category>> getCategories(@Path("language") String language);
 
-  @GET("https://webflux.josdem.io/categories/{categoryId}/beverages")
+  @GET("https://qa.josdem.io/categories/{categoryId}/beverages")
   public Call<List<Beverage>> getBeverages(@Path("categoryId") Integer id);
 
-  @GET("https://webflux.josdem.io/beverages/{beverageId}")
+  @GET("https://qa.josdem.io/beverages/{beverageId}")
   public Call<Beverage> getBeverage(@Path("beverageId") Integer id);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
