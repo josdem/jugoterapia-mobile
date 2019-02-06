@@ -16,8 +16,8 @@
 
 package com.jugoterapia.josdem.util;
 
-import java.io.IOException;
 import java.net.URL;
+import java.io.IOException;
 import java.io.InputStream;
 
 import android.util.Log;
@@ -35,18 +35,18 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
   protected Bitmap doInBackground(String... urls) {
     String url = urls[0];
-    Bitmap mIcon11 = null;
+    Bitmap bitmap = null;
     try {
       InputStream in = new URL(url).openStream();
-      mIcon11 = BitmapFactory.decodeStream(in);
+      bitmap = BitmapFactory.decodeStream(in);
     } catch (IOException ioe) {
       Log.e("Error", ioe.getMessage());
     }
-    return mIcon11;
+    return bitmap;
   }
 
-  protected void onPostExecute(Bitmap result) {
-    imageView.setImageBitmap(result);
+  protected void onPostExecute(Bitmap bitmap) {
+    imageView.setImageBitmap(bitmap);
   }
 
 }
