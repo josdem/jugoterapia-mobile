@@ -18,7 +18,6 @@ package com.jugoterapia.josdem.state;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -35,7 +34,7 @@ public class ApplicationState {
 						.build());
 
 		final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
-		fetch.addOnSuccessListener( t -> firebaseRemoteConfig.activateFetched() );
+		fetch.addOnSuccessListener( it -> firebaseRemoteConfig.activateFetched() );
 	}
 
 	public static String buildServiceUrl(){
