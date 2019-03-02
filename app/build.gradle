@@ -43,14 +43,10 @@ dependencies {
     implementation 'javax.inject:javax.inject:1'
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.6.8@aar'
-    // https://mvnrepository.com/artifact/io.fabric.sdk.android/fabric
-    compile group: 'io.fabric.sdk.android', name: 'fabric', version: '1.4.2'
-// https://mvnrepository.com/artifact/com.crashlytics.sdk.android/answers
-    compile group: 'com.crashlytics.sdk.android', name: 'answers', version: '1.4.1'
-    // https://mvnrepository.com/artifact/com.crashlytics.sdk.android/beta
-    // https://mvnrepository.com/artifact/com.crashlytics.sdk.android/crashlytics-core
-    compile group: 'com.crashlytics.sdk.android', name: 'crashlytics-core', version: '2.4.1'
-    compile group: 'com.crashlytics.sdk.android', name: 'beta', version: '1.2.5'
+    implementation 'io.fabric.sdk.android:fabric:1.4.2'
+    implementation 'com.crashlytics.sdk.android:answers:1.4.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics-core:2.4.1'
+    implementation 'com.crashlytics.sdk.android:beta:1.2.5'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
