@@ -9,5 +9,6 @@ gradle.properties
 app/app-release.apk
 **iml
 google-services.json
+app/fabric.properties
 **swp
 **swo

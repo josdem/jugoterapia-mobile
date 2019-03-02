@@ -21,6 +21,9 @@
     </activity>
 <activity android:name=".activity.BeverageActivity"/>
 <activity android:name=".activity.RecipeActivity"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="a30d56582e778f554e3e1208d9797543cb5eaf8d" />
     </application>
 
     </manifest>
