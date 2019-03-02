@@ -57,9 +57,6 @@ public class CategoryActivity extends Activity {
   private CategoryAdapter adapter;
   private ActivityComponent activityComponent;
 
-  private FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-  private HashMap<String,Object> defaults = new HashMap<>();
-
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Category selectedCategory = (Category) parent.getAdapter().getItem(position);
     Intent intent = new Intent(this, BeverageActivity.class);
@@ -91,21 +88,6 @@ public class CategoryActivity extends Activity {
     ActivityComponentFactory.getActivityComponent(activityComponent, this).inject(this);
 
     setContentView(R.layout.activity_category);
-    firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-            .setDeveloperModeEnabled(true)
-            .build());
-
-    defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
-
-    final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
-    fetch.addOnSuccessListener(this, new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void aVoid) {
-        firebaseRemoteConfig.activateFetched();
-        getServiceUrl();
-      }
-    });
-
 
     String language = getString(R.string.language);
     Call<List<Category>> call = jugoterapiaService.getCategories(language);
@@ -123,11 +105,6 @@ public class CategoryActivity extends Activity {
       }
 
     });
-  }
-
-  private String getServiceUrl(){
-    Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
-    return (String) firebaseRemoteConfig.getString("serviceUrl");
   }
 
 }

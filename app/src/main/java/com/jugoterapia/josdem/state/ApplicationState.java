@@ -16,8 +16,32 @@
 
 package com.jugoterapia.josdem.state;
 
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
 public class ApplicationState {
-	public static final String URL_MOBILE_SERVER = "https://qa.josdem.io";
 	public static final String CONNECTION_TITLE = "Mensaje";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
+
+	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+	private static void setup(){
+		firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+						.setDeveloperModeEnabled(true)
+						.build());
+
+		final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
+		fetch.addOnSuccessListener( t -> firebaseRemoteConfig.activateFetched() );
+	}
+
+	public static String buildServiceUrl(){
+		Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
+		return (String) firebaseRemoteConfig.getString("serviceUrl");
+	}
+
+
 }
