@@ -23,16 +23,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
+import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
 import com.jugoterapia.josdem.util.ConnectionDialog;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,6 +56,9 @@ public class CategoryActivity extends Activity {
 
   private CategoryAdapter adapter;
   private ActivityComponent activityComponent;
+
+  private FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+  private HashMap<String,Object> defaults = new HashMap<>();
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Category selectedCategory = (Category) parent.getAdapter().getItem(position);
@@ -83,9 +91,23 @@ public class CategoryActivity extends Activity {
     ActivityComponentFactory.getActivityComponent(activityComponent, this).inject(this);
 
     setContentView(R.layout.activity_category);
+    firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(true)
+            .build());
+
+    defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
+
+    final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
+    fetch.addOnSuccessListener(this, new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void aVoid) {
+        firebaseRemoteConfig.activateFetched();
+        getServiceUrl();
+      }
+    });
+
 
     String language = getString(R.string.language);
-
     Call<List<Category>> call = jugoterapiaService.getCategories(language);
     call.enqueue(new retrofit2.Callback<List<Category>>() {
 
@@ -101,6 +123,11 @@ public class CategoryActivity extends Activity {
       }
 
     });
+  }
+
+  private String getServiceUrl(){
+    Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
+    return (String) firebaseRemoteConfig.getString("serviceUrl");
   }
 
 }
