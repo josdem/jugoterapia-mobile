@@ -40,7 +40,7 @@ public interface JugoterapiaService {
   public Call<Beverage> getBeverage(@Path("beverageId") Integer id);
 
   public static final Retrofit retrofit = new Retrofit.Builder()
-          .baseUrl(ApplicationState.buildServiceUrl())
+          .baseUrl(ApplicationState.URL_MOBILE_SERVER)
           .addConverterFactory(GsonConverterFactory.create())
           .build();
 

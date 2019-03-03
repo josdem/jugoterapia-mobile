@@ -1,3 +1,7 @@
+ext {
+    enableCrashlytics = true
+}
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
