@@ -39,7 +39,7 @@ public class JugoterapiaApplication extends Application {
   public void onCreate() {
     super.onCreate();
     Fabric.with(this, new Crashlytics());
-    ApplicationState.setup();
+    ApplicationState.initializeFirebaseRemoteConfig();
     applicationComponent = DaggerApplicationComponent
             .builder()
             .applicationModule(new ApplicationModule(this))

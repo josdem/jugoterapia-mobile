@@ -19,10 +19,12 @@ package com.jugoterapia.josdem.state;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.BuildConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class ApplicationState {
   public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
@@ -32,18 +34,18 @@ public class ApplicationState {
 	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 	private static HashMap<String, Object> defaults = new HashMap<>();
 
-	public static void setup(){
+	public static void initializeFirebaseRemoteConfig(){
 		firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
 						.setDeveloperModeEnabled(true)
 						.build());
     defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
     firebaseRemoteConfig.setDefaults(defaults);
 
-		final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
+		final Task<Void> fetch = firebaseRemoteConfig.fetch(TimeUnit.HOURS.toSeconds(12));
 		fetch.addOnSuccessListener( it -> firebaseRemoteConfig.activateFetched() );
 	}
 
-	public static String buildServiceUrl(){
+	public static String getServiceUrl(){
 		Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
 		return (String) firebaseRemoteConfig.getString("serviceUrl");
 	}
