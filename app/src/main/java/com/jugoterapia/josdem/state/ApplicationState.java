@@ -27,37 +27,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationState {
-	public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
+  public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
 	public static final String CONNECTION_TITLE = "Mensaje";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
-	private static  Map<String,String> defaults = new HashMap<>();
 
 	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+	private static Map<String,Object> defaults = new HashMap<>();
 
-	public static void setup(){
-		firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-						.setDeveloperModeEnabled(true)
-						.build());
+  public static void setup(){
+    firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(true)
+            .build());
+    defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
+    firebaseRemoteConfig.setDefaults(defaults);
 
-		defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
+    final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
+    fetch.addOnSuccessListener( it -> firebaseRemoteConfig.activateFetched() );
+  }
 
-		final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
-		fetch.addOnSuccessListener(new OnSuccessListener<Void>() {
-			@Override
-			public void onSuccess(Void aVoid) {
-				firebaseRemoteConfig.activateFetched();
-			}
-		});
-	}
-
-	public static String buildServiceUrl(){
-		String serviceUrl = (String) firebaseRemoteConfig.getString("serviceUrl");
-		Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
-		if (serviceUrl == null) {
-			return defaults.get("serviceUrl");
-		}
-		return (String) firebaseRemoteConfig.getString("serviceUrl");
-	}
+  public static String buildServiceUrl(){
+    Log.d("serviceUrl", firebaseRemoteConfig.getString("serviceUrl"));
+    return (String) firebaseRemoteConfig.getString("serviceUrl");
+  }
 
 
 }
