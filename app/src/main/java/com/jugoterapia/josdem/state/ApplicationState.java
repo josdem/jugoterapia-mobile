@@ -22,16 +22,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import java.util.HashMap;
+
 public class ApplicationState {
+  public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
 	public static final String CONNECTION_TITLE = "Mensaje";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
 
 	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+	private static HashMap<String, Object> defaults = new HashMap<>();
 
-	private static void setup(){
+	public static void setup(){
 		firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
 						.setDeveloperModeEnabled(true)
 						.build());
+    defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
+    firebaseRemoteConfig.setDefaults(defaults);
 
 		final Task<Void> fetch = firebaseRemoteConfig.fetch(0);
 		fetch.addOnSuccessListener( it -> firebaseRemoteConfig.activateFetched() );

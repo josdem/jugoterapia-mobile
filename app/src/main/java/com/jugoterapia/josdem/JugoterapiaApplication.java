@@ -23,6 +23,8 @@ import com.crashlytics.android.Crashlytics;
 import com.jugoterapia.josdem.component.ApplicationComponent;
 import com.jugoterapia.josdem.component.DaggerApplicationComponent;
 import com.jugoterapia.josdem.module.ApplicationModule;
+import com.jugoterapia.josdem.state.ApplicationState;
+
 import io.fabric.sdk.android.Fabric;
 
 public class JugoterapiaApplication extends Application {
@@ -37,6 +39,7 @@ public class JugoterapiaApplication extends Application {
   public void onCreate() {
     super.onCreate();
     Fabric.with(this, new Crashlytics());
+    ApplicationState.setup();
     applicationComponent = DaggerApplicationComponent
             .builder()
             .applicationModule(new ApplicationModule(this))
