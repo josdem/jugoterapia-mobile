@@ -36,12 +36,12 @@ public class ApplicationState {
 
 	public static void initializeFirebaseRemoteConfig(){
 		firebaseRemoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-						.setDeveloperModeEnabled(true)
+						.setDeveloperModeEnabled(false)
 						.build());
     defaults.put("serviceUrl", ApplicationState.URL_MOBILE_SERVER);
     firebaseRemoteConfig.setDefaults(defaults);
 
-		final Task<Void> fetch = firebaseRemoteConfig.fetch(TimeUnit.HOURS.toSeconds(12));
+		final Task<Void> fetch = firebaseRemoteConfig.fetch(TimeUnit.HOURS.toSeconds(24));
 		fetch.addOnSuccessListener( it -> firebaseRemoteConfig.activateFetched() );
 	}
 
