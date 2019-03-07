@@ -16,15 +16,14 @@
 
 package com.jugoterapia.josdem.state;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
-import android.util.Log;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApplicationState {
   public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
