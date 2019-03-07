@@ -16,6 +16,7 @@
 
 package com.jugoterapia.josdem.util;
 
+import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.state.ApplicationState;
 
 import android.app.Activity;
@@ -27,7 +28,7 @@ public class ConnectionDialog {
 	public static void show(final Activity activity) {
 		new AlertDialog.Builder(activity)
 		.setTitle(ApplicationState.CONNECTION_TITLE)
-		.setMessage(ApplicationState.CONNECTION_MESSAGE)
+		.setMessage(R.string.message)
 		.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int id){
 				activity.finish();
