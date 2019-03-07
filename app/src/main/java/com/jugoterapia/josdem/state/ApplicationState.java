@@ -27,8 +27,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import android.util.Log;
 
 public class ApplicationState {
-  public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
-	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
+  private static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
 
 	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 	private static Map<String,Object> defaults = new HashMap<>();
