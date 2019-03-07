@@ -28,7 +28,6 @@ import android.util.Log;
 
 public class ApplicationState {
   public static final String URL_MOBILE_SERVER = "https://webflux.josdem.io/";
-	public static final String CONNECTION_TITLE = "Mensaje";
 	public static final String CONNECTION_MESSAGE = "Por favor verifica tu conexión a Internet";
 
 	private static FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
