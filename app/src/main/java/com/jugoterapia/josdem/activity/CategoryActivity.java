@@ -17,6 +17,8 @@
 package com.jugoterapia.josdem.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,8 +50,10 @@ public class CategoryActivity extends Activity {
   @Inject
   JugoterapiaServiceImpl jugoterapiaService;
 
+  private Integer clickCounter = 0;
   private CategoryAdapter adapter;
   private ActivityComponent activityComponent;
+
 
   private void listViewClicked(AdapterView<?> parent, View view, int position, long id) {
     Category selectedCategory = (Category) parent.getAdapter().getItem(position);
@@ -84,7 +88,7 @@ public class CategoryActivity extends Activity {
     setContentView(R.layout.activity_category);
 
     String language = getString(R.string.language);
-    
+
     Call<List<Category>> call = jugoterapiaService.getCategories(language);
     call.enqueue(new retrofit2.Callback<List<Category>>() {
 
@@ -100,6 +104,28 @@ public class CategoryActivity extends Activity {
       }
 
     });
+
+    final int abTitleId = getResources().getIdentifier("action_bar", "id", "android");
+    findViewById(abTitleId).setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+        clickCounter++;
+        if(clickCounter >= 5){
+          Log.d("Easter Egg:","On Action Bar");
+          new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+                  .setMessage("Hello There!")
+                  .setPositiveButton("OK", null)
+                  .show();
+        }
+      }
+    });
+
+
+  }
+
+  private Activity getActivity(){
+    return CategoryActivity.this;
   }
 
 }
