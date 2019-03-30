@@ -24,20 +24,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jugoterapia.josdem.R;
 import com.jugoterapia.josdem.adapter.CategoryAdapter;
 import com.jugoterapia.josdem.component.ActivityComponent;
 import com.jugoterapia.josdem.model.Category;
 import com.jugoterapia.josdem.service.impl.JugoterapiaServiceImpl;
-import com.jugoterapia.josdem.state.ApplicationState;
 import com.jugoterapia.josdem.util.ActivityComponentFactory;
 import com.jugoterapia.josdem.util.ConnectionDialog;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -90,6 +84,7 @@ public class CategoryActivity extends Activity {
     setContentView(R.layout.activity_category);
 
     String language = getString(R.string.language);
+    
     Call<List<Category>> call = jugoterapiaService.getCategories(language);
     call.enqueue(new retrofit2.Callback<List<Category>>() {
 
