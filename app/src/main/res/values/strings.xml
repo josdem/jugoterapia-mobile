@@ -6,5 +6,7 @@
   <string name="name">Name</string>
   <string name="language">en</string>
   <string name="message">message</string>
+  <string name="dialogMessage">Hello There!</string>
+  <string name="dialogButton">OK</string>
   <string name="connection_error">Please, verify your internet connection</string>
 </resources>

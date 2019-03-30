@@ -6,5 +6,7 @@
   <string name="name">Nombre</string>
   <string name="language">es</string>
   <string name="message">mensaje</string>
+  <string name="dialogMessage">¡Hola desde mi corazón!</string>
+  <string name="dialogButton">Aceptar</string>
   <string name="connection_error">Por favor verifica tu conexión a Internet</string>
 </resources>

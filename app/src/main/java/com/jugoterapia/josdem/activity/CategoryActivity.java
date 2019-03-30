@@ -114,13 +114,13 @@ public class CategoryActivity extends Activity {
         if(clickCounter >= 5){
           Log.d("Easter Egg:","On Action Bar");
           new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
-                  .setMessage("Hello There!")
-                  .setPositiveButton("OK", null)
+                  .setMessage(R.string.dialogMessage)
+                  .setPositiveButton(R.string.dialogButton, null)
                   .show();
+          clickCounter=0;
         }
       }
     });
-
 
   }
 

@@ -1,8 +1,5 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="jugoterapiaTheme" parent="android:Theme.Material.Light">
-        <!-- Customize your theme here. -->
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
@@ -10,4 +7,7 @@
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 </resources>
