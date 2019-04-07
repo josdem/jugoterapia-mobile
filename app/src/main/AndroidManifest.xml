@@ -17,6 +17,9 @@
             tools:replace="android:value"
             android:name="android.support.VERSION"
             android:value="26.1.0" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
         <activity android:name=".activity.CategoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
