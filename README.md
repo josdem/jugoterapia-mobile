@@ -1,7 +1,7 @@
 Jugoterapia Mobile
 ----------------------------------------------
 
-![No Maintenance Intended](https://img.shields.io/maintenance/no/2019.svg)
+![No Maintenance Intended](https://img.shields.io/maintenance/no/2023.svg)
 
 DEPRECATED - Jugoterapia is an Android application mainly focused in improve your health based in Juice and smoothie recipes to provide alternatives to heal our bodies and boost energy.
 
